@@ -65,24 +65,32 @@ function App(): JSX.Element {
                   contentContainerStyle={{
                     flexGrow: 1, justifyContent: 'center', alignItems: 'center'
                   }}
-                  style={[styles.gamebox, {
-                    backgroundColor: '#ffff00', flexDirection: 'row'
+                  style={[{
+                    backgroundColor: '#ffff00',
+                    flexDirection: 'row', alignSelf: 'center',
+                    padding: 10
                   }]}//, borderRadius: 20, backgroundColor: "#ffffff", justifyContent: 'space-evenly' }}
                   data={boxrow.item}
-                  renderItem={(boxrowitem) => <Text style={{ color: '#000000' }}>hi</Text>}
-                // <FlatList
-                //   // style={{ flexDirection: 'column', borderRadius: 20, backgroundColor: "#ffff00", borderWidth: 3, columnGap: 20, flexWrap: 'wrap' }}
-                //   data={boxrowitem.item}
-                //   renderItem={(singleboxrow) => <FlatList
-                //     style={{ flexDirection: 'row' }}
-                //     data={singleboxrow.item}
-                //     renderItem={(singlebox) => <View style={styles.gridbox} >
-                //       <Text>
-                //         {singlebox.item}
-                //       </Text>
-                //     </View>}
-                //   />}
-                // />}
+                  renderItem={(boxrowitem) =>
+                    <FlatList
+                      contentContainerStyle={{
+                        flexGrow: 1, justifyContent: 'center', alignItems: 'center'
+                      }}
+                      style={{
+                        flexDirection: 'column', backgroundColor: "#00f0ff",
+                        margin: 10
+                      }}
+                      data={boxrowitem.item}
+                      renderItem={(singleboxrow) => <FlatList
+                        style={{ flexDirection: 'row', justifyContent: "space-evenly" }}
+                        data={singleboxrow.item}
+                        renderItem={(singlebox) => <View style={styles.gridbox} >
+                          <Text style={{ color: '#000000', padding: 10, margin: 10, backgroundColor: '#59d459' }}>
+                            {singlebox.item}
+                          </Text>
+                        </View>}
+                      />}
+                    />}
                 />
               )
             }}
@@ -106,7 +114,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    alignSelf: 'flex-start'
+    alignSelf: 'center'
   },
   view: {
     // justifyContent: 'space-evenly',
@@ -134,7 +142,7 @@ const styles = StyleSheet.create({
   },
   gamebox: {
     flexWrap: 'wrap',
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
     flex: 1
   }
 });
