@@ -17,6 +17,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -46,55 +47,85 @@ function App(): JSX.Element {
         <Text style={styles.title}>
           Welcome To TicTacToe
         </Text>
-        <View style={styles.gridbackground}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
 
-          <FlatList
-            style={[styles.gamebox, {
-              flexDirection: 'column',
-              backgroundColor: '#ff0000',
-            }]}//{ borderRadius: 20, backgroundColor: "#ffffff", gap: 20 }
-            data={grid}
-            contentContainerStyle={{
-              flexGrow: 1, justifyContent: 'center', alignItems: 'center'
-            }}
-            // columnWrapperStyle={{ flexWrap: 'wrap' }}
-            renderItem={(boxrow) => {
-              console.log(boxrow)
-              return (
-                <FlatList
-                  contentContainerStyle={{
-                    flexGrow: 1, justifyContent: 'center', alignItems: 'center'
-                  }}
-                  style={[{
-                    backgroundColor: '#ffff00',
-                    flexDirection: 'row', alignSelf: 'center',
-                    padding: 10
-                  }]}//, borderRadius: 20, backgroundColor: "#ffffff", justifyContent: 'space-evenly' }}
-                  data={boxrow.item}
-                  renderItem={(boxrowitem) =>
+          <View style={styles.gridbackground}>
+
+            <FlatList
+              style={[styles.gamebox, {
+                flexDirection: 'column',
+                backgroundColor: '#ff0000'
+              }]}
+              //{ borderRadius: 20, backgroundColor: "#ffffff", gap: 20 }
+              data={grid}
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: 'center',
+                // alignItems: 'center',
+                // alignContent: 'stretch',
+                gap: 20,
+                // alignSelf: 'stretch'
+                width: Dimensions.get('window').width,
+                backgroundColor: '#ff9aaa'
+              }}
+              // columnWrapperStyle={{ flexWrap: 'wrap' }}
+              renderItem={(boxrow) => {
+                return (
+                  <View>
                     <FlatList
+                      style={[{
+                        // flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        backgroundColor: '#ffaf00',
+                        // gap: 20, 
+                        // flexWrap: 'wrap',
+                        // width: Dimensions.get('window').width,
+                        // height: Dimensions.get('window').width
+                        // padding: 10
+                      }]}//, borderRadius: 20, backgroundColor: "#ffffff", justifyContent: 'space-evenly' }}
                       contentContainerStyle={{
-                        flexGrow: 1, justifyContent: 'center', alignItems: 'center'
+                        flexGrow: 1,
+                        // justifyContent: 'space-evenly',
+                        // width: Dimensions.get('window').width,
+                        // alignItems: 'center',
+                        alignContent: 'center'
                       }}
-                      style={{
-                        flexDirection: 'column', backgroundColor: "#00f0ff",
-                        margin: 10
+                      data={boxrow.item}
+                      renderItem={(boxrowitem) => {
+                        console.log(boxrowitem.index)
+
+                        return <FlatList
+                          contentContainerStyle={{
+                            flexGrow: 1,
+                            //  justifyContent: 'center', alignItems: 'center'
+                          }}
+                          style={{
+                            flexDirection: 'column',
+                            backgroundColor: "#00f0ff",
+                            // margin: 10
+                          }}
+                          data={boxrowitem.item}
+                          renderItem={(singleboxrow) => {
+                            return <FlatList
+                              style={{ flexDirection: 'row', justifyContent: "space-evenly" }}
+                              data={singleboxrow.item}
+                              renderItem={(singlebox) => <View style={styles.gridbox} >
+                                <Text style={{ color: '#000000', backgroundColor: '#59d459', borderWidth: 1 }}>
+                                  {singlebox.item}
+                                </Text>
+                              </View>}
+                            />
+                          }}
+                        />
                       }}
-                      data={boxrowitem.item}
-                      renderItem={(singleboxrow) => <FlatList
-                        style={{ flexDirection: 'row', justifyContent: "space-evenly" }}
-                        data={singleboxrow.item}
-                        renderItem={(singlebox) => <View style={styles.gridbox} >
-                          <Text style={{ color: '#000000', padding: 10, margin: 10, backgroundColor: '#59d459' }}>
-                            {singlebox.item}
-                          </Text>
-                        </View>}
-                      />}
-                    />}
-                />
-              )
-            }}
-          />
+                    />
+                  </View>
+
+                )
+              }}
+            />
+          </View>
         </View>
         <Button title='click' onPress={() => {
           setColor("#00ffff")
@@ -128,22 +159,27 @@ const styles = StyleSheet.create({
     // alignContent:'center'
   },
   gridbox: {
+    // color: '#000000',
+    backgroundColor: '#ffff00', margin: 20
     // backgroundColor: "#ff00ff",
     // margin: 5,
-    // // height: 20,
-    // // width: 20,
+    // height: 20,
+    // width: 20,
     // alignItems: 'center',
     // justifyContent: 'center',
   },
   gridbackground: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: 'center',
+    // width: Dimensions.get('window').width,
+    // height: Dimensions.get('window').width,
+    backgroundColor: "#7add89"
   },
   gamebox: {
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
     // alignSelf: 'stretch',
-    flex: 1
+    // flex: 1
   }
 });
 
