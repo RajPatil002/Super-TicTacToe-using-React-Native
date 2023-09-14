@@ -18,6 +18,7 @@ import {
   useColorScheme,
   View,
   Dimensions,
+  ListRenderItem,
 } from 'react-native';
 
 import {
@@ -27,23 +28,18 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
-const length = 3;
-let inc = 1
-
-function generateGrid() { return Array(3).fill(Array(3).fill(singleGameGrid())) }
-
-function singleGameGrid() { return Array.from({ length }, (_, index) => Array.from({ length }, (_, i) => inc++)) }
+import SingleGameBox from './lib/singlegame';
+import BigGame from './lib/biggame';
 
 
 
 function App(): JSX.Element {
   const [color, setColor] = useState("#ff0fff")
-  const [grid, setGrid] = useState(generateGrid())
+  const [bigbox, setBigBox] = useState(new BigGame())
 
   return (
     <SafeAreaView style={styles.safeareaview}>
-      <View style={[styles.view, { backgroundColor: color }]}>
+      <View style={[styles.window]}>
         <Text style={styles.title}>
           Welcome To TicTacToe
         </Text>
@@ -52,84 +48,50 @@ function App(): JSX.Element {
           <View style={styles.gridbackground}>
 
             <FlatList
-              style={[styles.gamebox, {
-                flexDirection: 'column',
-                backgroundColor: '#ff0000'
-              }]}
-              //{ borderRadius: 20, backgroundColor: "#ffffff", gap: 20 }
-              data={grid}
-              contentContainerStyle={{
-                flexGrow: 1,
-                justifyContent: 'center',
-                // alignItems: 'center',
-                // alignContent: 'stretch',
-                gap: 20,
-                // alignSelf: 'stretch'
-                width: Dimensions.get('window').width,
-                backgroundColor: '#ff9aaa'
-              }}
-              // columnWrapperStyle={{ flexWrap: 'wrap' }}
-              renderItem={(boxrow) => {
-                return (
-                  <View>
-                    <FlatList
-                      style={[{
-                        // flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        backgroundColor: '#ffaf00',
-                        // gap: 20, 
-                        // flexWrap: 'wrap',
-                        // width: Dimensions.get('window').width,
-                        // height: Dimensions.get('window').width
-                        // padding: 10
-                      }]}//, borderRadius: 20, backgroundColor: "#ffffff", justifyContent: 'space-evenly' }}
-                      contentContainerStyle={{
-                        flexGrow: 1,
-                        // justifyContent: 'space-evenly',
-                        // width: Dimensions.get('window').width,
-                        // alignItems: 'center',
-                        alignContent: 'center'
-                      }}
-                      data={boxrow.item}
-                      renderItem={(boxrowitem) => {
-                        console.log(boxrowitem.index)
-
-                        return <FlatList
-                          contentContainerStyle={{
-                            flexGrow: 1,
-                            //  justifyContent: 'center', alignItems: 'center'
-                          }}
-                          style={{
-                            flexDirection: 'column',
-                            backgroundColor: "#00f0ff",
-                            // margin: 10
-                          }}
-                          data={boxrowitem.item}
-                          renderItem={(singleboxrow) => {
-                            return <FlatList
-                              style={{ flexDirection: 'row', justifyContent: "space-evenly" }}
-                              data={singleboxrow.item}
-                              renderItem={(singlebox) => <View style={styles.gridbox} >
-                                <Text style={{ color: '#000000', backgroundColor: '#59d459', borderWidth: 1 }}>
-                                  {singlebox.item}
-                                </Text>
-                              </View>}
-                            />
-                          }}
-                        />
-                      }}
-                    />
-                  </View>
-
-                )
+              data={bigbox.bigbox}
+              renderItem={(bigboxrow) => {
+                return <View style={{ flexDirection: 'row', }}>
+                  {bigboxrow.item.map((bigboxrowitem) => <View
+                    style={{
+                      margin: (Dimensions.get('window').width / 12) * 0.1,
+                      borderWidth: 2,
+                      borderColor: '#000',
+                      // borderWidth: 1
+                    }}
+                  >
+                    {typeof (bigboxrowitem.box) != 'string' ?
+                      <FlatList
+                        style={{
+                          flex: 1,
+                          // flexGrow: 1,
+                          alignSelf: 'stretch',
+                          // margin: 10,
+                          padding: (Dimensions.get('window').width / 12) * 0.05,
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                        data={bigboxrowitem.box}
+                        renderItem={(singleboxrow) => {
+                          console.log(singleboxrow.item)
+                          return <View style={{ flexDirection: 'row', }}>
+                            {singleboxrow.item.map((singleboxitem) => <View style={{
+                              borderColor: "#000",
+                              borderWidth: 1,
+                              height: (Dimensions.get('window').width / 12),
+                              width: (Dimensions.get('window').width / 12),
+                              margin: (Dimensions.get('window').width / 12) / 13.5,
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}><Text style={{ fontSize: 20, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>)}
+                          </View>
+                        }}
+                      /> : <View></View>}
+                  </View>)}
+                </View>
               }}
             />
           </View>
         </View>
-        <Button title='click' onPress={() => {
-          setColor("#00ffff")
-        }} />
       </View>
     </SafeAreaView>
   );
@@ -139,42 +101,26 @@ const styles = StyleSheet.create({
   safeareaview: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#ffc2c2",
+    backgroundColor: "#fff",
     flex: 1
   },
   title: {
     fontSize: 24,
     fontWeight: '600',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    color: "#0ff",
   },
-  view: {
-    // justifyContent: 'space-evenly',
+  window: {
     alignContent: 'center',
     justifyContent: "center",
-
-    alignSelf: 'stretch',
-
     flex: 1,
-    // backgroundColor: "#ffc2c2",
-    // alignContent:'center'
-  },
-  gridbox: {
-    // color: '#000000',
-    backgroundColor: '#ffff00', margin: 20
-    // backgroundColor: "#ff00ff",
-    // margin: 5,
-    // height: 20,
-    // width: 20,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   gridbackground: {
-    // flex: 1,
     justifyContent: "center",
     alignItems: 'center',
     // width: Dimensions.get('window').width,
     // height: Dimensions.get('window').width,
-    backgroundColor: "#7add89"
+    // backgroundColor: "#7add89"
   },
   gamebox: {
     // flexWrap: 'wrap',
