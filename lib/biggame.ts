@@ -4,8 +4,9 @@ import SingleGameBox from "./singlegame";
 class BigGame {
     bigbox: SingleGameBox[][] = [];
 
+
     constructor() {
-        this.bigbox = new Array(3).fill(new Array(3).fill(new SingleGameBox()))
+        this.bigbox = Array.from(({ length: 3 }), () => Array.from(({ length: 3 }), () => new SingleGameBox()))
     }
 
 
