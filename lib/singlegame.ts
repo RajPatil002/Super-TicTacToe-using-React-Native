@@ -29,13 +29,28 @@ class SingleGameBox {
     }
 
 
-    updateGameBox(r: number, c: number, value: string) {
-        typeof (this.box) === 'object' ? this.box[r][c] = value : null;
-        // console.log(this.checkBoxStatus(value))
-        if (this.checkBoxStatus(value) == value) {
-            this.box = value
+    updateGameBox(r: number, c: number, value: string): boolean {
+        // this.box = value
+        // return true
+        if (typeof (this.box) != 'string') {
+            this.box[r][c] = value
+            if (this.checkBoxStatus(value) == value) {
+                this.box = value
+                return true
+            }
         }
-        return this.box
+        // console.log(this.checkBoxStatus(value))
+        return false
+    }
+
+    isSpaceAvailable(): boolean {
+        if (typeof (this.box) != 'string') {
+            for (let index = 0; index < this.box.length; index++) {
+                if (this.box[index].includes(' '))
+                    return true
+            }
+        }
+        return false
     }
 
 

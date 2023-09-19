@@ -18,16 +18,14 @@ class BigGame {
     //     }
     // }
 
-    nextBox(r: number, c: number,) {
-        if (this.boxIsFilled(r, c)) {
-
+    isNextBoxAvailable(r: number, c: number,): boolean {
+        if (typeof (this.bigbox[r][c].box) == 'string') {
+            return false
         }
+        return this.bigbox[r][c].isSpaceAvailable()
     }
 
-    boxIsFilled(r: number, c: number,): boolean {
 
-        return false
-    }
     checkBigBoxStatus(value: string) {
         if (this.checkBigDiagonal1(0, 0, value) || this.checkBigDiagonal2(this.bigbox.length - 1, 0, value)) {
             return true
@@ -83,7 +81,6 @@ class BigGame {
     }
 }
 
-// new BigGame()
 
 export default BigGame;
 

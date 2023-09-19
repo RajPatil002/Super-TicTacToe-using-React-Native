@@ -46,9 +46,12 @@ function printBigBox(bigbox: BigGame) {
   })
 }
 
+
 function App(): JSX.Element {
   const [bigbox, _] = useState(new BigGame())
   const [count, setC] = useState(0)
+  const [availableboxr, setavailableboxr] = useState<number | undefined>()
+  const [availableboxc, setavailableboxc] = useState<number | undefined>()
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -66,7 +69,13 @@ function App(): JSX.Element {
               renderItem={(bigboxrow) => {
                 return <View style={{ flexDirection: 'row', }} key={bigboxrow.index}>
                   {bigboxrow.item.map((smallbox, bigindex) => <View
-                    style={styles.bigbox}
+                    style={availableboxr == bigboxrow.index && bigindex == availableboxc
+                      ? styles.bigboxtomark
+                      : availableboxc == undefined
+                        ? typeof (smallbox.box) == 'string'
+                          ? styles.bigbox
+                          : styles.bigboxtomark
+                        : styles.bigbox}
                     key={bigindex}
                   >
                     {typeof (smallbox.box) != 'string' ?
@@ -75,23 +84,29 @@ function App(): JSX.Element {
                         data={smallbox.box}
                         keyExtractor={(_, index) => index.toString()}
                         renderItem={(singleboxrow) => {
-                          // console.log(singleboxrow.item)
                           return <View style={{ flexDirection: 'row', }} >
                             {singleboxrow.item.map((singleboxitem, index) => {
                               return <Pressable
-                                onPress={() => {
+                                onPress={(availableboxr == undefined || (bigboxrow.index == availableboxr && bigindex == availableboxc)) && singleboxitem == ' ' ? () => {
                                   console.log("singleboxitem", index)
-                                  if (typeof (smallbox.box) != 'string') {
-                                    // smallbox.box = newBigBox(smallbox.box, singleboxrow.index, index)
-                                    bigbox.bigbox[bigboxrow.index][bigindex].updateGameBox(singleboxrow.index, index, count % 2 == 0 ? 'x' : 'x')
-                                    setC(count + 1)
-                                    // smallbox.box = smallbox.updateGameBox(singleboxrow.index, index, 'x')
-                                    // setBigBox(bigbox)
+                                  const value = count % 2 == 0 ? 'x' : 'o'
+                                  const win = bigbox.bigbox[bigboxrow.index][bigindex].updateGameBox(singleboxrow.index, index, value)
+                                  if (win) {
+                                    console.log(bigbox.checkBigBoxStatus(value))
                                   }
+                                  if (bigbox.isNextBoxAvailable(singleboxrow.index, index,)) {
+                                    console.log(singleboxrow.index, index)
+                                    setavailableboxr(singleboxrow.index)
+                                    setavailableboxc(index)
+                                  } else {
+                                    setavailableboxr(undefined)
+                                    setavailableboxc(undefined)
+                                  }
+                                  setC(count + 1)
                                   printBigBox(bigbox)
-                                }}
+                                } : null}
                                 key={singleboxrow.index + "" + index}
-                                style={styles.pressbox}
+                                style={(availableboxr == undefined || (bigboxrow.index == availableboxr && bigindex == availableboxc)) && singleboxitem == ' ' ? styles.pressboxavailable : styles.pressbox}
                               >
                                 <View style={styles.center}><Text style={{ fontSize: 25, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>
                               </Pressable>
@@ -142,26 +157,47 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     padding: (Dimensions.get('window').width / 12) * 0.05,
+    // backgroundColor: '#0ff',
     justifyContent: 'center',
     alignItems: 'center'
   },
   bigbox: {
     margin: (Dimensions.get('window').width / 12) * 0.2,
     borderWidth: 2,
-    borderColor: '#000',
+    borderColor: '#fa5555',
   },
-  pressbox: {
-    // backgroundColor: '#f00',
-    borderWidth: 1,
+  bigboxtomark: {
+    margin: (Dimensions.get('window').width / 12) * 0.2,
+    borderWidth: 4,
+    borderColor: '#228B22',
+  },
+  // bigboxnottomark: {
+  //   margin: (Dimensions.get('window').width / 12) * 0.2,
+  //   borderWidth: 4,
+  //   borderColor: '#228B22',
+  // },
+  pressboxavailable: {
+    borderWidth: 1.5,
+    borderColor: '#228B22',
     height: (Dimensions.get('window').width / 12),
     width: (Dimensions.get('window').width / 12),
     margin: (Dimensions.get('window').width / 12) / 18,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  pressbox: {
+    borderWidth: 1,
+    borderColor: '#fa5555',
+    height: (Dimensions.get('window').width / 12),
+    width: (Dimensions.get('window').width / 12),
+    margin: (Dimensions.get('window').width / 12) / 18,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   winnerbox: {
     // backgroundColor: '#f00',
-    borderWidth: 1,
+    borderWidth: 3,
+    borderColor: '#000',
     height: ((Dimensions.get('window').width * 3) / 12),
     width: ((Dimensions.get('window').width * 3) / 12),
     margin: (Dimensions.get('window').width / 56),
