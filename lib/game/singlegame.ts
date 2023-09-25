@@ -2,25 +2,6 @@
 class SingleGameBox {
     box: Array<Array<string>> | string;
 
-    // generateRandomArray(rows = 3, cols = 3): Array<Array<string>> {
-    //     const randomArray = [];
-
-    //     for (let i = 0; i < rows; i++) {
-    //         const row = [];
-
-    //         for (let j = 0; j < cols; j++) {
-    //             // Generate a random number between 0 and 9 (inclusive)
-    //             const randomNumber = Math.floor(Math.random() * 10).toString();
-    //             console.log(randomNumber)
-    //             row.push(randomNumber);
-    //         }
-
-    //         randomArray.push(row);
-    //     }
-
-    //     return randomArray;
-    // }
-
     constructor() {
         this.box = Array.from(({ length: 3 }), () => new Array<string>(3).fill(" "));
         // this.box = this.generateRandomArray(3, 3);
