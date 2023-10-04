@@ -16,15 +16,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-const Stack = createNativeStackNavigator();
+export type stackParams = {
+  HomePage: undefined;
+  OnlineGamePage: {
+    port: string,
+    createdbyid: string
+  };
+}
+
+const Stack = createNativeStackNavigator<stackParams>();
 
 function App(): JSX.Element {
 
   return (
     <NavigationContainer >
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName='HomePage'>
         <Stack.Screen name='HomePage' component={HomePage} />
-        <Stack.Screen name='GamePage' component={OnlineGamePage} />
+        <Stack.Screen name='OnlineGamePage' component={OnlineGamePage} />
       </Stack.Navigator>
     </NavigationContainer>
     // <SafeAreaView style={styles.safeareaview}>

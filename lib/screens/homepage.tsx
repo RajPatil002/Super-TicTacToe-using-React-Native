@@ -1,21 +1,35 @@
 
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import ShadowButton from '../widgets/button'
+import { Server } from '../game/serverconnect'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { stackParams } from '../../App'
+import GlobalStyles from '../widgets/styles'
 
 
 
 
-function HomePage({ navigation }: any): JSX.Element {
+function HomePage(): JSX.Element {
+    const navigation = useNavigation<NativeStackNavigationProp<stackParams>>()
     const [onlinetypevisible, setonlinetypevisible] = useState(false)
+    // const [port, setPort] = useState<undefined | string>()
+    // return (
+    //     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+    //         <View style={{ width: Dimensions.get('screen').width * 0.35, height: Dimensions.get('screen').height * 0.25, backgroundColor: "#0ff" }}></View>
+    //         <View style={{ width: Dimensions.get('window').width * 0.35, height: Dimensions.get('window').height * 0.25, backgroundColor: "#f0f" }}></View>
+
+    //     </View>
+    // )
     return (
-        <View style={styles.center}>
+        <View style={GlobalStyles.center}>
             <Modal
                 visible={onlinetypevisible}
                 onRequestClose={() => setonlinetypevisible(false)}
                 transparent>
-                <View style={[styles.center, { backgroundColor: "#00000099" }]}>
-                    <View style={[styles.center, { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 }]}>
+                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                    <View style={[GlobalStyles.center, { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 }]}>
                         <Pressable
                             onPress={() => setonlinetypevisible(false)}
                             style={{ alignSelf: 'flex-end', borderWidth: 2, borderRadius: 50, width: 40, height: 40, justifyContent: 'center', }}>
@@ -24,7 +38,15 @@ function HomePage({ navigation }: any): JSX.Element {
                         <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold' }}>Hi</Text>
                         <ShadowButton
                             label='Create Game'
-                            onPress={() => { }}
+                            onPress={async () => {
+                                const resp: { port: string, createdbyid: string } | undefined = await Server.getPort()
+                                // console.log(typeof (resp.port))
+                                if (resp != undefined) {
+                                    setonlinetypevisible(false)
+                                    // setPort(port.port)
+                                    navigation.navigate('OnlineGamePage', { port: resp.port, createdbyid: resp.createdbyid })
+                                }
+                            }}
                             textStyles={{ color: "#fff", fontSize: 30, fontWeight: 'bold' }}
                             style={{
                                 borderColor: "#000", borderWidth: 0, borderRadius: 10, backgroundColor: "#6d33ff", paddingHorizontal: 20, margin: 10
@@ -41,7 +63,7 @@ function HomePage({ navigation }: any): JSX.Element {
                     </View>
                 </View>
             </Modal>
-            <Text style={styles.title}>
+            <Text style={GlobalStyles.title}>
                 Welcome To TicTacToe
             </Text>
             <ShadowButton label={'Offline'}
@@ -63,35 +85,5 @@ function HomePage({ navigation }: any): JSX.Element {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    title: {
-        fontSize: 24,
-        fontWeight: '600',
-        alignSelf: 'center',
-        color: "#0ff",
-        textTransform: 'uppercase'
-    },
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    button: {
-        // padding: 20,
-        // borderRadius: 20,
-        // marginVertical: 20,
-        // borderWidth: 1,
-        // elevation: 10,
-        backgroundColor: "#a0f",
-        position: 'absolute',
-    },
-    shadowbox: {
-        // padding: 10,
-        // borderRadius: 20,
-        alignSelf: 'stretch',
-        backgroundColor: "#0f9",
-    },
-})
 
 export default HomePage
