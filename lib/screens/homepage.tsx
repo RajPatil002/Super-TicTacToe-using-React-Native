@@ -1,6 +1,6 @@
 
 import { Dimensions, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ShadowButton from '../widgets/button'
 import { Server } from '../game/serverconnect'
 import { useNavigation } from '@react-navigation/native'
@@ -14,10 +14,15 @@ import GlobalStyles from '../widgets/styles'
 function HomePage(): JSX.Element {
     const navigation = useNavigation<NativeStackNavigationProp<stackParams>>()
     const [onlinetypevisible, setonlinetypevisible] = useState(false)
-    const [joinbox, setJoinBox] = useState(false)
+    const [joinbox, setJoinBox] = useState(true)
     const [code, setCode] = useState(['', '', '', ''])
-    const [focusnode, setFocusNode] = useState(0)
+    const [focusnode, setFocusNode] = useState<undefined | number>(undefined)
     const ref = Array.from({ length: 4 }, () => useRef(null))
+    useEffect(() => {
+        if (joinbox) {
+            ref[0].current.focus()
+        }
+    }, [joinbox])
     // const [port, setPort] = useState<undefined | string>()
     // return (
     //     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
@@ -86,31 +91,71 @@ function HomePage(): JSX.Element {
                             <Text style={{ color: "#f00", fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>X</Text>
                         </Pressable>
                         <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold', textTransform: 'uppercase' }}>Enter code</Text>
-                        <View style={{ borderWidth: 0, flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {code.map((singledigit, index) => {
+                                console.log((ref[index].current != null ? ref[index].current.isFocused() : index == 0))
+                                const isFocused = focusnode == index
                                 return <View
-                                    key={index}
-                                    style={{ borderWidth: 2, padding: 5, margin: 5, width: Dimensions.get('window').width * 0.125, height: Dimensions.get('window').width * 0.125 }}>
-                                    <TextInput
-                                        ref={ref[index]}
-                                        autoFocus={index == 0}
-                                        numberOfLines={1}
-                                        maxLength={1}
-                                        keyboardType='numeric'
-                                        value={singledigit}
-                                        inputMode='numeric'
-                                        onChangeText={(text) => {
-                                            text = text.replace(/\D/g, '');
-                                            const prev = [...code]
-                                            console.log(text)
-                                            prev[index] = text
-                                            setCode(prev)
-                                            if (text.length != 0 && index < ref.length - 1)
-                                                ref[index + 1].current.focus()
-                                            // setFocusNode(focusnode + 1)
-                                        }}
-                                        style={{ color: "#000", fontSize: 25 }} />
+                                    style={{
+                                        borderWidth: isFocused ? 5 : 2, borderRadius: 10,
+                                        margin: 5,
+                                    }}
+                                    key={index}>
+                                    <View
+                                        style={[{
+                                            flex: 0,
+                                            margin: isFocused
+                                                ? 2 : 0,
+                                            width: Dimensions.get('window').width * 0.125 * 0.8, height: Dimensions.get('window').width * 0.125 * 0.8
+                                        }]}>
+                                        {/* <TextInput ref={ref[index]} /> */}
+                                        <TextInput
+                                            ref={ref[index]}
+                                            numberOfLines={1}
+                                            maxLength={1}
+                                            autoFocus={index == 0}
+                                            keyboardType='numeric'
+                                            caretHidden={true}
+                                            value={''}
+                                            placeholder={singledigit}
+                                            placeholderTextColor={"#000"}
+                                            inputMode='numeric'
+                                            onFocus={() => {
+                                                if ((ref[index].current.isFocused())) {
+                                                    setFocusNode(index)
+                                                }
+                                            }}
+                                            onKeyPress={(k) => {
+                                                if (k.nativeEvent.key == 'Backspace' && index > 0) {
+                                                    ref[index - 1].current.focus()
+                                                }
+                                            }}
+                                            onChangeText={(text) => {
+                                                text = text.replace(/\D/g, '');
+                                                const prev = [...code]
+                                                console.log(text)
+                                                prev[index] = text
+                                                setCode(prev)
+                                                if (text.length != 0)
+                                                    if (index < ref.length - 1 && ref[index + 1].current != null)
+                                                        ref[index + 1].current.focus()
+                                                    else {
+                                                        ref[index].current.blur()
+                                                        setFocusNode(undefined)
+                                                    }
+                                                // else
+
+                                                // setFocusNode(focusnode + 1)
+                                            }}
+                                            style={{
+                                                color: "#000",
+                                                fontSize: 30,
+                                                textAlign: 'center',
+                                                paddingVertical: 0
+                                            }} />
+                                    </View>
                                 </View>
+
                             })}</View>
                         <ShadowButton
                             label='Join Game'
