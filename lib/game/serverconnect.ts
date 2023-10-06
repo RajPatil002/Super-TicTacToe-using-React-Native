@@ -43,7 +43,7 @@ class Server {
         return resp
     }
 
-    static async getPortInformation(gameport: string) {
+    static async getPortInformation(gameport: string): Promise<{ port: string } | undefined> {
         const resp = await fetch(this.url + this.port + "/portinfo", {
             method: 'POST',
             headers: {
@@ -56,7 +56,7 @@ class Server {
             })
             .catch(error => {
                 console.log('error', error)
-                return {}
+                return undefined
             });
         return resp
     }

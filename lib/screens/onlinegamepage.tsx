@@ -64,10 +64,10 @@ const OnlineGamePage: React.FC<Props> = (props) => {
             console.log("here")
             socket.websocket.onopen = () => {
                 console.log("Connected1")
-                socket.websocket.send(JSON.stringify({
-                    name: "Raj",
-                    createdbyid: createdbyid
-                }))
+                // socket.websocket.send(JSON.stringify({
+                //     name: "Raj",
+                //     createdbyid: createdbyid
+                // }))
                 socket.websocket.onmessage = (message) => {
                     console.log("mssg" + (message.data.toString()))
                     const data: move | players | start = JSON.parse(message.data.toString())

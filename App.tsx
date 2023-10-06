@@ -20,7 +20,7 @@ export type stackParams = {
   HomePage: undefined;
   OnlineGamePage: {
     port: string,
-    createdbyid: string
+    createdbyid: string | undefined
   };
 }
 
