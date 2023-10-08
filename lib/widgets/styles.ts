@@ -15,5 +15,8 @@ const GlobalStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    button: {
+        borderColor: "#000", borderWidth: 0, borderRadius: 10, backgroundColor: "#6d33ff", paddingHorizontal: 20, margin: 10
+    }
 })
 export default GlobalStyles

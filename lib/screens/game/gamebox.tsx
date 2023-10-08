@@ -1,16 +1,37 @@
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import BigGame from '../game/biggame'
-import SocketServer from '../game/serverconnect'
+import React, { useEffect, useState } from 'react'
+import BigGame from '../../game/biggame'
+import SocketServer from '../../game/serverconnect'
+
+type move = { br: number, bc: number, r: number, c: number, marker: string }
 
 const GameBox: React.FC<{
     online: boolean,
+    bigbox: BigGame,
+    move: move | undefined
     // onPress: () => void
-}> = ({ online }) => {
-    const [bigbox, __] = useState(new BigGame())
+}> = ({ online, bigbox, move }) => {
+    // const [bigbox, __] = useState(new BigGame())
     const [count, setC] = useState(0)
     const [availableboxr, setavailableboxr] = useState<number | undefined>()
     const [availableboxc, setavailableboxc] = useState<number | undefined>()
+    useEffect(() => {
+        if (online && move) {
+            const win = bigbox.bigbox[move.br][move.bc].updateGameBox(move.r, move.c, move.marker)
+            if (win) {
+                console.log(bigbox.checkBigBoxStatus(move.marker))
+            }
+            if (bigbox.isNextBoxAvailable(move.r, move.c)) {
+                console.log(move.r, move.c)
+                setavailableboxr(move.r)
+                setavailableboxc(move.c)
+            } else {
+                setavailableboxr(undefined)
+                setavailableboxc(undefined)
+            }
+        }
+    }, [])
+
     return (
         <FlatList
             data={bigbox.bigbox}

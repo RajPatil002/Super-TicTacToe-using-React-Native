@@ -10,8 +10,8 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
-import OnlineGamePage from './lib/screens/onlinegamepage';
-import HomePage from './lib/screens/homepage';
+import OnlineGamePage from './lib/screens/game/onlinegamepage';
+import HomePage from './lib/screens/home/homepage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -32,6 +32,7 @@ function App(): JSX.Element {
     <NavigationContainer >
       <Stack.Navigator initialRouteName='HomePage'>
         <Stack.Screen name='HomePage' component={HomePage} />
+        {/* @ts-ignore */}
         <Stack.Screen name='OnlineGamePage' component={OnlineGamePage} />
       </Stack.Navigator>
     </NavigationContainer>

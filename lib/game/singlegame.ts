@@ -35,7 +35,7 @@ class SingleGameBox {
     }
 
 
-    checkBoxStatus(value: string): string {
+    private checkBoxStatus(value: string): string {
         if (this.checkWinner(value)) {
             return value;
         } else {
@@ -45,7 +45,7 @@ class SingleGameBox {
         }
         return "";
     }
-    checkFilled() {
+    private checkFilled() {
         for (let i = 0; i < this.box.length; i++) {
             if (this.box[i].includes(' '))
 
@@ -54,7 +54,7 @@ class SingleGameBox {
         return true
     }
 
-    checkWinner(value: string) {
+    private checkWinner(value: string) {
         if (this.checkDiagonal1(0, 0, value) || this.checkDiagonal2(this.box.length - 1, 0, value)) {
             return true
         } else {
@@ -69,7 +69,7 @@ class SingleGameBox {
         return false;
     }
 
-    checkDiagonal1(r: number, c: number, value: string): boolean {
+    private checkDiagonal1(r: number, c: number, value: string): boolean {
         if (this.box[r][c] == value) {
             if (r < this.box.length - 1)
                 return this.checkDiagonal1(r + 1, c + 1, value)
@@ -79,7 +79,7 @@ class SingleGameBox {
         return false
     }
 
-    checkDiagonal2(r: number, c: number, value: string): boolean {
+    private checkDiagonal2(r: number, c: number, value: string): boolean {
         if (this.box[r][c] == value) {
             if (r > 0 && c < this.box.length - 1)
                 return this.checkDiagonal2(r - 1, c + 1, value)
@@ -89,7 +89,7 @@ class SingleGameBox {
         return false
     }
 
-    checkRow(r: number, c: number, value: string): boolean {
+    private checkRow(r: number, c: number, value: string): boolean {
         if (this.box[r][c] == value) {
             if (c < this.box.length - 1)
                 return this.checkRow(r, c + 1, value)
@@ -98,7 +98,7 @@ class SingleGameBox {
         }
         return false
     }
-    checkColumn(r: number, c: number, value: string): boolean {
+    private checkColumn(r: number, c: number, value: string): boolean {
         if (this.box[r][c] == value) {
             if (r < this.box.length - 1)
                 return this.checkColumn(r + 1, c, value)

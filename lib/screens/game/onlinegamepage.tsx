@@ -1,12 +1,13 @@
 import { Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GameBox from './gamebox'
-import SocketServer, { Server } from '../game/serverconnect'
+import SocketServer, { Server } from '../../game/serverconnect'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { stackParams } from '../../App'
-import ShadowButton from '../widgets/button'
-import GlobalStyles from '../widgets/styles'
+import { stackParams } from '../../../App'
+import { CloseButton, ShadowButton } from '../../widgets/button'
+import GlobalStyles from '../../widgets/styles'
 import { useNavigation } from '@react-navigation/native'
+import BigGame from '../../game/biggame'
 
 type Props = NativeStackNavigationProp<stackParams, 'OnlineGamePage'>
 type playerstatus = { status: { ready: boolean, connected: boolean }, marker: string | undefined }
@@ -26,6 +27,7 @@ type start = {
 
 const OnlineGamePage: React.FC<Props> = (props) => {
     const [_, setState] = useState()
+    // @ts-ignore
     const { route } = props
     const navigation = useNavigation()
     const { port, createdbyid } = route.params
@@ -34,8 +36,12 @@ const OnlineGamePage: React.FC<Props> = (props) => {
     const [opponent, setOpponent] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
     const [countdown, setCountdown] = useState<number | undefined>()
     const [startCount, setStartCount] = useState(false)
+    const [move, setMove] = useState<move>()
+
+    const [bigbox, __] = useState(new BigGame())
     useEffect(() => {
         // const soc = 
+        console.log("created")
         setSocket(new SocketServer(port))
     }, [])
 
@@ -64,10 +70,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
             console.log("here")
             socket.websocket.onopen = () => {
                 console.log("Connected1")
-                // socket.websocket.send(JSON.stringify({
-                //     name: "Raj",
-                //     createdbyid: createdbyid
-                // }))
                 socket.websocket.onmessage = (message) => {
                     console.log("mssg" + (message.data.toString()))
                     const data: move | players | start = JSON.parse(message.data.toString())
@@ -78,6 +80,7 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                     }
                     else if ('move' in data) {
                         console.log(data.move)
+                        setMove(data)
                         // this.sendToOtherPlayer(message.toString(), ws.id)
                         // this.changeTurn(ws.id)
                     } else if ('start' in data) {
@@ -103,13 +106,11 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                 transparent>
                 <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 }]}>
-                        <Pressable
+                        <CloseButton
                             onPress={() => {
 
                             }}
-                            style={{ alignSelf: 'flex-end', borderWidth: 2, borderRadius: 50, width: 40, height: 40, justifyContent: 'center', }}>
-                            <Text style={{ color: "#f00", fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>X</Text>
-                        </Pressable>
+                        />
 
                         <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold' }}>{port}</Text>
                         {countdown != undefined ? <Text style={{ color: "#f07", fontSize: 30, fontWeight: 'bold' }}>{countdown}</Text> : null}
@@ -168,10 +169,9 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                                 }
                                 // setReady(!ready)
                             }}
+                            elevation={7.5}
                             textStyles={{ color: "#fff", fontSize: 30, fontWeight: 'bold' }}
-                            style={{
-                                borderColor: "#000", borderWidth: 0, borderRadius: 10, backgroundColor: "#6d33ff", paddingHorizontal: 20, margin: 10
-                            }}
+                            style={GlobalStyles.button}
                         />
                     </View>
                 </View>
@@ -181,6 +181,8 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                 <View style={styles.gridbackground}>
                     <GameBox
                         online={true}
+                        bigbox={bigbox}
+                        move={move?.move}
                     />
                 </View>
             </View>

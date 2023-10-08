@@ -3,6 +3,7 @@ import { Button, ColorValue, GestureResponderEvent, Pressable, PressableProps, S
 import React, { JSXElementConstructor, ReactNode, useState } from 'react'
 
 
+console.log("123")
 const ShadowButton: React.FC<{
     label: string,
     textStyles?: StyleProp<TextStyle>,
@@ -17,8 +18,11 @@ const ShadowButton: React.FC<{
     elevation = 5,
     onPress
 }) => {
-        const [margin, _] = (style as ViewStyle).margin != undefined ? useState((style as ViewStyle).margin) : useState(0)
-        style['margin'] = 0
+        // const [margin, _] = style.margin ? useState(style.margin) : useState(0)
+        const { margin, ...newstyle } = style
+        // const margin = style.margin ?? 0
+        // style.margin = 0
+        // console.log(style.margin, style)
         const [pressed, setIsPressed] = useState(false)
         return <Pressable
             onPress={() => setTimeout(onPress, 100)}
@@ -26,13 +30,16 @@ const ShadowButton: React.FC<{
             onPressOut={() => setIsPressed(false)}>
             <View
                 style={{ position: 'relative', flexDirection: 'row', margin: margin, }}>
-                <View style={[style, { marginLeft: elevation, marginTop: elevation, backgroundColor: shadowColor, padding: 10 },]}>
+                <View style={[newstyle, { margin: 0, marginLeft: elevation, marginTop: elevation, backgroundColor: shadowColor, padding: 10 },]}>
                     <Text style={[textStyles, { color: shadowColor },]}>
                         {label}
                     </Text>
                 </View>
                 <View
-                    style={[{ backgroundColor: "#fff", padding: 10, borderWidth: 1 }, style, { position: 'absolute' }, pressed ? { marginTop: elevation, marginLeft: elevation } : {}]}>
+                    style={[
+                        { backgroundColor: "#fff", padding: 10, borderWidth: 1 },
+                        newstyle, { position: 'absolute' },
+                        pressed ? { marginTop: elevation, marginLeft: elevation } : {}]}>
                     <Text style={[{ color: "#000" }, textStyles]}>
                         {label}
                     </Text>
@@ -41,4 +48,16 @@ const ShadowButton: React.FC<{
         </Pressable>
     }
 
-export default ShadowButton;
+const CloseButton: React.FC<{
+    onPress: () => void
+}> = ({ onPress }) => {
+    return (
+        <Pressable
+            onPress={onPress}
+            style={{ alignSelf: 'flex-end', borderWidth: 1, borderRadius: 50, width: 35, height: 35, justifyContent: 'center', }}>
+            <Text style={{ color: "#fa5555", fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>X</Text>
+        </Pressable>)
+}
+
+
+export { CloseButton, ShadowButton }
