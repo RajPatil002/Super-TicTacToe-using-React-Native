@@ -1,97 +1,131 @@
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BigGame from '../../game/biggame'
-import SocketServer from '../../game/serverconnect'
 
 type move = { br: number, bc: number, r: number, c: number, marker: string }
 
 const GameBox: React.FC<{
     online: boolean,
     bigbox: BigGame,
-    move: move | undefined
+    onMark: (br: number, bc: number, r: number, c: number) => void,
+    marker?: 'x' | 'o',
+    nextboxrow: number | undefined,
+    nextboxcolumn: number | undefined,
+    turn?: boolean
     // onPress: () => void
-}> = ({ online, bigbox, move }) => {
-    // const [bigbox, __] = useState(new BigGame())
-    const [count, setC] = useState(0)
-    const [availableboxr, setavailableboxr] = useState<number | undefined>()
-    const [availableboxc, setavailableboxc] = useState<number | undefined>()
-    useEffect(() => {
-        if (online && move) {
-            const win = bigbox.bigbox[move.br][move.bc].updateGameBox(move.r, move.c, move.marker)
-            if (win) {
-                console.log(bigbox.checkBigBoxStatus(move.marker))
-            }
-            if (bigbox.isNextBoxAvailable(move.r, move.c)) {
-                console.log(move.r, move.c)
-                setavailableboxr(move.r)
-                setavailableboxc(move.c)
-            } else {
-                setavailableboxr(undefined)
-                setavailableboxc(undefined)
-            }
-        }
-    }, [])
+}> = ({ online, bigbox, turn, nextboxrow, nextboxcolumn, onMark }) => {
+    console.log(online, turn, nextboxrow, nextboxcolumn,)
+    const [clicked, setClick] = useState(false)
 
     return (
-        <FlatList
-            data={bigbox.bigbox}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={(bigboxrow) => {
-                return <View style={{ flexDirection: 'row', }} key={bigboxrow.index}>
-                    {bigboxrow.item.map((smallbox, bigindex) => <View
-                        style={availableboxr == bigboxrow.index && bigindex == availableboxc
-                            ? styles.bigboxtomark
-                            : availableboxc == undefined
-                                ? typeof (smallbox.box) == 'string'
-                                    ? styles.bigbox
-                                    : styles.bigboxtomark
-                                : styles.bigbox}
-                        key={bigindex}>
-                        {typeof (smallbox.box) != 'string' ?
-                            <FlatList
-                                style={styles.gamebox}
-                                data={smallbox.box}
-                                keyExtractor={(_, index) => index.toString()}
-                                renderItem={(singleboxrow) => {
-                                    return <View style={{ flexDirection: 'row', }} >
-                                        {singleboxrow.item.map((singleboxitem, index) => {
-                                            return <Pressable
-                                                onPress={(availableboxr == undefined || (bigboxrow.index == availableboxr && bigindex == availableboxc)) && singleboxitem == ' ' ? () => {
-                                                    console.log("singleboxitem", index)
-                                                    const value = count % 2 == 0 ? 'x' : 'o'
-                                                    const win = bigbox.bigbox[bigboxrow.index][bigindex].updateGameBox(singleboxrow.index, index, value)
-                                                    if (win) {
-                                                        console.log(bigbox.checkBigBoxStatus(value))
-                                                    }
-                                                    if (bigbox.isNextBoxAvailable(singleboxrow.index, index,)) {
-                                                        console.log(singleboxrow.index, index)
-                                                        setavailableboxr(singleboxrow.index)
-                                                        setavailableboxc(index)
-                                                    } else {
-                                                        setavailableboxr(undefined)
-                                                        setavailableboxc(undefined)
-                                                    }
-                                                    setC(count + 1)
-                                                } : null}
-                                                key={singleboxrow.index + "" + index}
-                                                style={(availableboxr == undefined || (bigboxrow.index == availableboxr && bigindex == availableboxc)) && singleboxitem == ' ' ? styles.pressboxavailable : styles.pressbox}
-                                            >
-                                                <View style={styles.center}><Text style={{ fontSize: 25, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>
-                                            </Pressable>
-                                        })}
-                                    </View>
+        online
+            ? <FlatList
+                data={bigbox.bigbox}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={(bigboxrow) => {
+                    return <View style={{ flexDirection: 'row', }} key={bigboxrow.index}>
+                        {bigboxrow.item.map((smallbox, bigindex) => <View
+                            style={(turn
+                                ? (nextboxrow == bigboxrow.index && bigindex == nextboxcolumn
+                                    ? styles.bigboxtomark
+                                    : nextboxcolumn == undefined
+                                        ? typeof (smallbox.box) == 'string'
+                                            ? styles.bigbox
+                                            : styles.bigboxtomark
+                                        : styles.bigbox)
+                                : styles.bigboxonline)}
+                            key={bigindex}>
+                            {typeof (smallbox.box) != 'string' ?
+                                <FlatList
+                                    style={styles.gamebox}
+                                    data={smallbox.box}
+                                    keyExtractor={(_, index) => index.toString()}
+                                    renderItem={(singleboxrow) => {
+                                        return <View style={{ flexDirection: 'row', }} >
+                                            {singleboxrow.item.map((singleboxitem, index) => {
+                                                return <Pressable
+                                                    onPress={turn
+                                                        ? ((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                            ? () => {
+                                                                setClick(true)
+                                                                onMark(bigboxrow.index, bigindex, singleboxrow.index, index)
+                                                                setClick(false)
+                                                            }
+                                                            : null)
+                                                        : () => {
+                                                            const move: move = { br: bigboxrow.index, bc: bigindex, r: singleboxrow.index, c: index, marker: 'x' }
+                                                            console.log(move, "remove this from box click")
+                                                        }}
+                                                    key={singleboxrow.index + "" + index}
+                                                    style={(turn
+                                                        ? ((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                            ? styles.pressboxavailable
+                                                            : styles.pressbox)
+                                                        : styles.pressboxonline)}
+                                                >
+                                                    <View style={styles.center}><Text style={{ fontSize: 25, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>
+                                                </Pressable>
+                                            })}
+                                        </View>
 
-                                }}
-                            />
-                            : <View style={styles.winnerbox}>
-                                <Text style={{ fontSize: 50, color: '#000', fontWeight: 'bold' }}>
-                                    {smallbox.box}
-                                </Text>
-                            </View>}
-                    </View>)}
-                </View>
-            }}
-        />
+                                    }}
+                                />
+                                : <View style={styles.winnerbox}>
+                                    <Text style={{ fontSize: 50, color: '#000', fontWeight: 'bold' }}>
+                                        {smallbox.box}
+                                    </Text>
+                                </View>}
+                        </View>)}
+                    </View>
+                }}
+            />
+            : <FlatList
+                data={bigbox.bigbox}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={(bigboxrow) => {
+                    return <View style={{ flexDirection: 'row', }} key={bigboxrow.index}>
+                        {bigboxrow.item.map((smallbox, bigindex) => <View
+                            style={(nextboxrow == bigboxrow.index && bigindex == nextboxcolumn
+                                ? styles.bigboxtomark
+                                : nextboxcolumn == undefined
+                                    ? typeof (smallbox.box) == 'string'
+                                        ? styles.bigbox
+                                        : styles.bigboxtomark
+                                    : styles.bigbox)}
+                            key={bigindex}>
+                            {typeof (smallbox.box) != 'string' ?
+                                <FlatList
+                                    style={styles.gamebox}
+                                    data={smallbox.box}
+                                    keyExtractor={(_, index) => index.toString()}
+                                    renderItem={(singleboxrow) => {
+                                        return <View style={{ flexDirection: 'row', }} >
+                                            {singleboxrow.item.map((singleboxitem, index) => {
+                                                return <Pressable
+                                                    onPress={((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                        ? () => onMark(bigboxrow.index, bigindex, singleboxrow.index, index)
+                                                        : null)}
+                                                    key={singleboxrow.index + "" + index}
+                                                    style={((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                        ? styles.pressboxavailable
+                                                        : styles.pressbox)}
+                                                >
+                                                    <View style={styles.center}><Text style={{ fontSize: 25, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>
+                                                </Pressable>
+                                            })}
+                                        </View>
+
+                                    }}
+                                />
+                                : <View style={styles.winnerbox}>
+                                    <Text style={{ fontSize: 50, color: '#000', fontWeight: 'bold' }}>
+                                        {smallbox.box}
+                                    </Text>
+                                </View>}
+                        </View>)}
+                    </View>
+                }}
+            />
     )
 }
 
@@ -104,12 +138,17 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         padding: (Dimensions.get('window').width / 12) * 0.05,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     bigbox: {
         margin: (Dimensions.get('window').width / 12) * 0.2,
         borderWidth: 2,
         borderColor: '#fa5555',
+    },
+    bigboxonline: {
+        margin: (Dimensions.get('window').width / 12) * 0.2,
+        borderWidth: 2,
+        borderColor: '#000',
     },
     bigboxtomark: {
         margin: (Dimensions.get('window').width / 12) * 0.2,
@@ -119,6 +158,15 @@ const styles = StyleSheet.create({
     pressboxavailable: {
         borderWidth: 1.5,
         borderColor: '#228B22',
+        height: (Dimensions.get('window').width / 12),
+        width: (Dimensions.get('window').width / 12),
+        margin: (Dimensions.get('window').width / 12) / 18,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    pressboxonline: {
+        borderWidth: 1.5,
+        borderColor: '#000',
         height: (Dimensions.get('window').width / 12),
         width: (Dimensions.get('window').width / 12),
         margin: (Dimensions.get('window').width / 12) / 18,

@@ -11,7 +11,7 @@ const ConnectModeBox: React.FC<{
     visible: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
     navigation: NativeStackNavigationProp<stackParams>,
 }> = ({ visible, navigation }) => {
-    const [box, setBox] = visible
+    const [_, setBox] = visible
     return (
         <View style={[GlobalStyles.center, { flex: 0 }]}>
             <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold' }}>Hi</Text>
@@ -21,8 +21,6 @@ const ConnectModeBox: React.FC<{
                     const resp: { port: string, createdbyid: string } | undefined = await Server.getPort()
                     // console.log(typeof (resp.port))
                     if (resp != undefined) {
-                        // setonlinetypevisible(false)
-                        // setPort(port.port)
                         navigation.navigate('OnlineGamePage', { port: resp.port, createdbyid: resp.createdbyid })
                     }
                 }}

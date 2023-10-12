@@ -14,6 +14,8 @@ import OnlineGamePage from './lib/screens/game/onlinegamepage';
 import HomePage from './lib/screens/home/homepage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import OfflineGamePage from './lib/screens/game/offlinegamepage';
+import { Header } from '@react-navigation/stack';
 
 
 export type stackParams = {
@@ -22,6 +24,12 @@ export type stackParams = {
     port: string,
     createdbyid: string | undefined
   };
+  OfflineGamePage: {
+    players: Array<{
+      marker: 'x' | 'o' | undefined,
+      name: string
+    }>
+  }
 }
 
 const Stack = createNativeStackNavigator<stackParams>();
@@ -33,7 +41,9 @@ function App(): JSX.Element {
       <Stack.Navigator initialRouteName='HomePage'>
         <Stack.Screen name='HomePage' component={HomePage} />
         {/* @ts-ignore */}
-        <Stack.Screen name='OnlineGamePage' component={OnlineGamePage} />
+        <Stack.Screen name='OnlineGamePage' component={OnlineGamePage} options={{ headerShown: false }} />
+        {/* @ts-ignore */}
+        <Stack.Screen name='OfflineGamePage' component={OfflineGamePage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
     // <SafeAreaView style={styles.safeareaview}>

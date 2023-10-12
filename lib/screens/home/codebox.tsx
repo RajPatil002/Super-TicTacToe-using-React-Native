@@ -11,7 +11,7 @@ const CodeBox: React.FC<{
     visible: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
     navigation: NativeStackNavigationProp<stackParams>
 }> = ({ visible, navigation }) => {
-    const [code, setCode] = useState(['', '', '', ''])
+    const [code, setCode] = useState(['1', '0', '0', '0'])
     const [focusnode, setFocusNode] = useState<undefined | number>(undefined)
     const [isvalid, setValid] = useState(true)
     const [codebox, setJoinBox] = visible;

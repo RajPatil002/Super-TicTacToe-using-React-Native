@@ -9,6 +9,8 @@ import GlobalStyles from '../../widgets/styles'
 import CodeBox from './codebox'
 import ConnectModeBox from './connectmodebox'
 import { CloseButton, ShadowButton } from '../../widgets/button'
+import WinnerBox from '../game/winnerbox'
+import PlayersNameField from './playersnamefield'
 
 
 
@@ -16,8 +18,9 @@ import { CloseButton, ShadowButton } from '../../widgets/button'
 const HomePage: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<stackParams>>()
     const [onlinemode, setOnlineModeVisible] = useState(false)
+    const [namefields, setNameField] = useState(false)
     const codebox = useState(false)
-    console.log(codebox)
+    console.log('hi', codebox)
     return (
         <View style={GlobalStyles.center}>
             <Modal
@@ -42,20 +45,38 @@ const HomePage: React.FC = () => {
                     </View>
                 </View>
             </Modal>
+
+            <Modal
+                visible={namefields}
+                onRequestClose={() => setOnlineModeVisible(false)}
+                transparent>
+                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                    <View style={[GlobalStyles.center, style.box]}>
+                        <CloseButton
+                            onPress={() => setNameField(false)} />
+                        <PlayersNameField navigation={navigation} />
+
+                    </View>
+                </View>
+            </Modal>
             <Text style={GlobalStyles.title}>
                 Welcome To TicTacToe
             </Text>
-            <ShadowButton label={'Offline'}
-                textStyles={style.buttontext}
-                style={GlobalStyles.button}
-                elevation={7.5}
-                onPress={() => setOnlineModeVisible(true)}
-            />
             <ShadowButton label={'Online'}
                 textStyles={style.buttontext}
                 style={GlobalStyles.button}
                 elevation={7.5}
-                onPress={() => console.log("2")}
+                onPress={() => {
+                    console.log('press')
+                    setOnlineModeVisible(false)
+                    setOnlineModeVisible(true)
+                }}
+            />
+            <ShadowButton label={'Offline'}
+                textStyles={style.buttontext}
+                style={GlobalStyles.button}
+                elevation={7.5}
+                onPress={() => setNameField(true)}
             />
         </View>
     )

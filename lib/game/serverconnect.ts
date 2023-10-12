@@ -21,6 +21,10 @@ class SocketServer {
             }
         }))
     }
+
+    async sendMove(move: { br: number, bc: number, r: number, c: number, marker: "x" | 'o' }) {
+        await this.websocket.send(JSON.stringify({ move: move }))
+    }
 }
 
 

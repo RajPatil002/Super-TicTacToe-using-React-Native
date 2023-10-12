@@ -10,7 +10,7 @@ const ShadowButton: React.FC<{
     style?: ViewStyle,
     shadowColor?: ColorValue,
     elevation?: number,
-    onPress: () => void
+    onPress: (() => void) | null | undefined
 }> = ({ label,
     textStyles,
     shadowColor = "#c5c5c5",
@@ -25,7 +25,7 @@ const ShadowButton: React.FC<{
         // console.log(style.margin, style)
         const [pressed, setIsPressed] = useState(false)
         return <Pressable
-            onPress={() => setTimeout(onPress, 100)}
+            onPress={onPress ? () => setTimeout(onPress, 100) : null}
             onPressIn={() => setIsPressed(true)}
             onPressOut={() => setIsPressed(false)}>
             <View
