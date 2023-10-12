@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Server } from '../../game/serverconnect'
 import { ShadowButton } from '../../widgets/button'
 import GlobalStyles from '../../widgets/styles'
@@ -12,30 +12,32 @@ const ConnectModeBox: React.FC<{
     navigation: NativeStackNavigationProp<stackParams>,
 }> = ({ visible, navigation }) => {
     const [_, setBox] = visible
+    const [clicked, setClick] = useState(false)
     return (
         <View style={[GlobalStyles.center, { flex: 0 }]}>
-            <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold' }}>Hi</Text>
+            <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold', textTransform: 'uppercase' }}>game</Text>
             <ShadowButton
                 label='Create Game'
-                onPress={async () => {
-                    const resp: { port: string, createdbyid: string } | undefined = await Server.getPort()
-                    // console.log(typeof (resp.port))
-                    if (resp != undefined) {
-                        navigation.navigate('OnlineGamePage', { port: resp.port, createdbyid: resp.createdbyid })
-                    }
-                }}
+                onPress={clicked
+                    ? (async () => {
+                        setClick(true)
+                        const resp: { port: string, createdbyid: string } | undefined = await Server.getPort()
+                        if (resp != undefined) {
+                            navigation.navigate('OnlineGamePage', { port: resp.port, createdbyid: resp.createdbyid })
+                        }
+                        setClick(false)
+                    }) : null}
                 elevation={7.5}
-                textStyles={style.buttontext}
+                textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
             />
             <ShadowButton
                 label='Join Game'
                 onPress={() => {
                     setBox(true)
-                    // setonlinetypevisible(false)
                 }}
                 elevation={7.5}
-                textStyles={{ color: "#fff", fontSize: 30, fontWeight: 'bold' }}
+                textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
             />
         </View>
@@ -44,6 +46,6 @@ const ConnectModeBox: React.FC<{
 
 export default ConnectModeBox
 
-const style = StyleSheet.create({
-    buttontext: { color: "#fff", fontSize: 30, fontWeight: 'bold' }
-})
+// const style = StyleSheet.create({
+//     buttontext: { color: "#fff", fontSize: 30, fontWeight: 'bold' }
+// })

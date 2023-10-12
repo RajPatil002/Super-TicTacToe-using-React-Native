@@ -2,7 +2,6 @@ import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-n
 import React, { useEffect, useState } from 'react'
 import BigGame from '../../game/biggame'
 
-type move = { br: number, bc: number, r: number, c: number, marker: string }
 
 const GameBox: React.FC<{
     online: boolean,
@@ -12,9 +11,8 @@ const GameBox: React.FC<{
     nextboxrow: number | undefined,
     nextboxcolumn: number | undefined,
     turn?: boolean
-    // onPress: () => void
-}> = ({ online, bigbox, turn, nextboxrow, nextboxcolumn, onMark }) => {
-    console.log(online, turn, nextboxrow, nextboxcolumn,)
+}> = ({ online, bigbox, turn, nextboxrow, nextboxcolumn, onMark, marker }) => {
+    // console.log(online, turn, nextboxrow, nextboxcolumn,)
     const [clicked, setClick] = useState(false)
 
     return (
@@ -54,7 +52,7 @@ const GameBox: React.FC<{
                                                             : null)
                                                         : () => {
                                                             const move: move = { br: bigboxrow.index, bc: bigindex, r: singleboxrow.index, c: index, marker: 'x' }
-                                                            console.log(move, "remove this from box click")
+                                                            // console.log(move, "remove this from box click")
                                                         }}
                                                     key={singleboxrow.index + "" + index}
                                                     style={(turn
@@ -63,7 +61,9 @@ const GameBox: React.FC<{
                                                             : styles.pressbox)
                                                         : styles.pressboxonline)}
                                                 >
-                                                    <View style={styles.center}><Text style={{ fontSize: 25, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>
+                                                    <View style={styles.center}>
+                                                        <Text style={[styles.marker, { color: singleboxitem == marker ? "#6d33ff" : '#000' }]}>{singleboxitem}</Text>
+                                                    </View>
                                                 </Pressable>
                                             })}
                                         </View>
@@ -110,7 +110,7 @@ const GameBox: React.FC<{
                                                         ? styles.pressboxavailable
                                                         : styles.pressbox)}
                                                 >
-                                                    <View style={styles.center}><Text style={{ fontSize: 25, color: '#000', fontWeight: 'bold' }}>{singleboxitem}</Text></View>
+                                                    <View style={styles.center}><Text style={[styles.marker, { color: '#000', }]}>{singleboxitem}</Text></View>
                                                 </Pressable>
                                             })}
                                         </View>
@@ -194,5 +194,6 @@ const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    marker: { fontSize: 25, fontWeight: 'bold' }
 })

@@ -3,7 +3,6 @@ import { Button, ColorValue, GestureResponderEvent, Pressable, PressableProps, S
 import React, { JSXElementConstructor, ReactNode, useState } from 'react'
 
 
-console.log("123")
 const ShadowButton: React.FC<{
     label: string,
     textStyles?: StyleProp<TextStyle>,
@@ -22,7 +21,7 @@ const ShadowButton: React.FC<{
         const { margin, ...newstyle } = style
         // const margin = style.margin ?? 0
         // style.margin = 0
-        // console.log(style.margin, style)
+        // // console.log(style.margin, style)
         const [pressed, setIsPressed] = useState(false)
         return <Pressable
             onPress={onPress ? () => setTimeout(onPress, 100) : null}

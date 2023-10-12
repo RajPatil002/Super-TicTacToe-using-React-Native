@@ -48,7 +48,7 @@ const PlayersNameField: React.FC<{
                                 onChangeText={(text) => {
                                     if (text.length < 16)
                                         player.name = text
-                                    console.log(player.name)
+                                    // console.log(player.name)
                                 }}
                             />
                         </View>
@@ -57,7 +57,7 @@ const PlayersNameField: React.FC<{
                 <ShadowButton
                     label='start'
                     elevation={7.5}
-                    textStyles={{ color: "#fff", fontSize: 30, fontWeight: 'bold' }}
+                    textStyles={GlobalStyles.buttontext}
                     style={GlobalStyles.button}
                     onPress={() => {
                         // @ts-ignore
@@ -65,7 +65,7 @@ const PlayersNameField: React.FC<{
                             ? 'x'
                             : 'o')
                         players[1].marker = players[0].marker == 'x' ? 'o' : 'x'
-                        // console.log(players)
+                        // // console.log(players)
 
                         navigation.navigate('OfflineGamePage', { players: players })
                         // getMarker() {

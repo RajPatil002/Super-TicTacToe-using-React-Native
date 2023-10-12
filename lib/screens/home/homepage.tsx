@@ -20,7 +20,6 @@ const HomePage: React.FC = () => {
     const [onlinemode, setOnlineModeVisible] = useState(false)
     const [namefields, setNameField] = useState(false)
     const codebox = useState(false)
-    console.log('hi', codebox)
     return (
         <View style={GlobalStyles.center}>
             <Modal
@@ -63,17 +62,17 @@ const HomePage: React.FC = () => {
                 Welcome To TicTacToe
             </Text>
             <ShadowButton label={'Online'}
-                textStyles={style.buttontext}
+                textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
                 elevation={7.5}
                 onPress={() => {
-                    console.log('press')
+                    // console.log('press')
                     setOnlineModeVisible(false)
                     setOnlineModeVisible(true)
                 }}
             />
             <ShadowButton label={'Offline'}
-                textStyles={style.buttontext}
+                textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
                 elevation={7.5}
                 onPress={() => setNameField(true)}
@@ -84,7 +83,6 @@ const HomePage: React.FC = () => {
 
 const style = StyleSheet.create({
     box: { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 },
-    buttontext: { color: "#fff", fontSize: 30, fontWeight: 'bold' }
 
 })
 export default HomePage

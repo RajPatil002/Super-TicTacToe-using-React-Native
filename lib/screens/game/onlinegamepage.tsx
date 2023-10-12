@@ -11,21 +11,6 @@ import BigGame from '../../game/biggame'
 
 type Props = NativeStackNavigationProp<stackParams, 'OnlineGamePage'>
 
-type marker = "x" | 'o'
-type move = { br: number, bc: number, r: number, c: number, marker: marker }
-type playerstatus = { status: { ready: boolean, connected: boolean }, marker: marker | undefined }
-type players = {
-    players: {
-        you: any,
-        opponent: any
-    }
-}
-type start = {
-    turn: boolean,
-    start: boolean
-}
-
-type turn = { turn: boolean }
 
 const OnlineGamePage: React.FC<Props> = (props) => {
     const [_, setState] = useState()
@@ -60,63 +45,18 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 
 
     useEffect(() => {
-        // const soc = 
-        console.log("created")
         setSocket(new SocketServer(port))
     }, [])
 
-    // useEffect(() => {
-    //     console.log(countdown, timer, "2sasas")
-    //     if (countdown == 0) {
-    //         console.log(timer, "sasas")
-    //         clearInterval(timer)
-    //         setTimer(undefined)
-    //         setCountdown(undefined)
-    //         // console.log(timer, "2sasas")
-    //     }
-    // }, [countdown])
-
-    // useEffect(() => {
-    //     console.log("timer here")
-    //     if (startCount) {
-    //         console.log("timer init")
-    //         if (countdown) {
-    //             let counter = countdown
-    //             setTimer(setInterval(() => {
-    //                 console.log(counter)
-    //                 if (counter > 0) {
-    //                     counter -= 1
-    //                     setCountdown(counter)
-    //                 }
-    //                 // if (counter == 0) {
-    //                 //     console.log("timer dead", timer)
-    //                 //     clearInterval(timer)
-    //                 //     setTimer(undefined)
-    //                 //     setCountdown(undefined)
-    //                 // }
-    //             }, 1000))
-    //             // setTimeout(() => {
-
-    //             // }, countdown * 1000)
-    //         }
-    //     } else {
-    //         console.log("timer dead1", timer)
-    //         clearInterval(timer)
-    //         setTimer(undefined)
-    //         setCountdown(undefined)
-    //         if (timer) {
-    //         }
-    //     }
-    // }, [startCount])
     useEffect(() => {
         if (socket) {
-            console.log("here")
+            // console.log("here")
             socket.websocket.onopen = () => {
-                console.log("Connected1")
+                // console.log("Connected1")
                 socket.websocket.onmessage = (message) => {
-                    // console.log("mssg" + (message.data.toString()))
+                    // // console.log("mssg" + (message.data.toString()))
                     const data: ({ move: move } & turn) | players | start | turn = JSON.parse(message.data.toString())
-                    console.log(data)
+                    // console.log(data)
 
                     if ('start' in data) {
                         if (data.start) {
@@ -125,25 +65,25 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                             setStart(true)
                             setTurn(data.turn)
                         }
-                        // console.log(data.start.countdown)
+                        // // console.log(data.start.countdown)
                         // if (countdown) {
                         //     setCountdown()
                         // }
                     } else if ('move' in data) {
-                        console.log(data.move)
+                        // console.log(data.move)
                         const move: move = data.move
                         // setMove(data)
                         const win = bigbox.bigbox[move.br][move.bc].updateGameBox(move.r, move.c, move.marker)
                         if (win) {
                             if (bigbox.checkBigBoxStatus(move.marker)) {
-                                console.log(move.marker)
+                                // console.log(move.marker)
                                 // setWinner(you.marker == move.marker ? you : opponent)
-                                console.log('die')
+                                // console.log('die')
                                 return
                             }
                         }
                         if (bigbox.isNextBoxAvailable(move.r, move.c)) {
-                            console.log(move.r, move.c)
+                            // console.log(move.r, move.c)
                             setavailableboxr(move.r)
                             setavailableboxc(move.c)
                         } else {
@@ -225,10 +165,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                                     width: Dimensions.get('window').width * 0.3,
                                 }}>
                                     <View style={{ alignItems: 'flex-start', padding: 20 }}>
-                                        {/* <Text>{((mytextvar).length > maxlimit) ?
-                                        (((mytextvar).substring(0, maxlimit - 3)) + '...') :
-                                        mytextvar}
-                                    </Text> */}
                                         <Text style={{ fontSize: 20, textTransform: 'uppercase', }} numberOfLines={1}>{opponent.status.connected ? 'opponent' : 'waiting'}</Text>
                                         <Text style={{ color: opponent.status.ready ? '#3f5' : '#f35' }}>{opponent.status.ready ? 'Ready' : 'Not Ready'}</Text>
                                     </View>
@@ -239,17 +175,14 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                             label={!you.status.ready ? 'Ready' : 'Not Ready'}
                             onPress={(!start)
                                 ? !clicked ? () => {
-                                    // const port: { port: string | undefined } = await Server.getPort()
-                                    console.log("typeof (port.port)")
                                     setClick(true)
                                     if (socket) {
                                         socket.sendReadyStatus(!you.status.ready)
                                     }
-                                    // setReady(!ready)
                                 } : null
                                 : null}
                             elevation={(!start) ? 7.5 : 0}
-                            textStyles={{ color: "#fff", fontSize: 30, fontWeight: 'bold' }}
+                            textStyles={GlobalStyles.buttontext}
                             style={GlobalStyles.button}
                         />
                     </View>
@@ -261,12 +194,12 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                     bigbox={bigbox}
                     onMark={async (bigrow: number, bigcolumn: number, row: number, column: number) => {
                         const move: move = { br: bigrow, bc: bigcolumn, r: row, c: column, marker: you.marker! }
-                        console.log("move", move)
                         if (socket) {
                             await socket.sendMove(move)
                         }
 
                     }}
+                    marker={you.marker}
                     nextboxrow={availableboxr}
                     nextboxcolumn={availableboxc}
                     turn={turn}

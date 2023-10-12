@@ -11,16 +11,15 @@ const CodeBox: React.FC<{
     visible: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
     navigation: NativeStackNavigationProp<stackParams>
 }> = ({ visible, navigation }) => {
-    const [code, setCode] = useState(['1', '0', '0', '0'])
+    const [code, setCode] = useState(['', '', '', ''])
     const [focusnode, setFocusNode] = useState<undefined | number>(undefined)
     const [isvalid, setValid] = useState(true)
-    const [codebox, setJoinBox] = visible;
     const ref = Array.from({ length: 4 }, () => useRef<any>(null))
     useEffect(() => {
         // setJoinBox(visible)
-        console.log("here is it", visible, ref)
+        // console.log("here is it", visible, ref)
         if (visible && ref[0].current) {
-            console.log(visible, codebox)
+            // // console.log(visible, codebox)
             ref[0].current.focus()
         }
     }, [visible])
@@ -34,11 +33,12 @@ const CodeBox: React.FC<{
             }}>
                 {code.map((singledigit, index) => {
                     const isFocused = focusnode == index
-                    // console.log(focusnode)
+                    // // console.log(focusnode)
                     return <View
                         style={{
-                            borderWidth: isFocused ? 5 : 2, borderRadius: 10,
+                            borderWidth: isFocused ? 5 : 0, borderRadius: 10,
                             margin: 5,
+                            backgroundColor: isFocused ? "#fff" : "#ddd"
                         }}
                         key={index}>
                         <View
@@ -62,7 +62,7 @@ const CodeBox: React.FC<{
                                 placeholderTextColor={"#000"}
                                 inputMode='numeric'
                                 onFocus={() => {
-                                    console.log(isvalid, index)
+                                    // console.log(isvalid, index)
                                     if (!isvalid)
                                         setValid(true)
                                     if ((ref[index].current.isFocused())) {
@@ -71,13 +71,16 @@ const CodeBox: React.FC<{
                                 }}
                                 onKeyPress={(k) => {
                                     if (k.nativeEvent.key == 'Backspace' && index > 0) {
+                                        const prev = [...code]
+                                        prev[index] = ''
+                                        setCode(prev)
                                         ref[index - 1].current.focus()
                                     }
                                 }}
                                 onChangeText={(text) => {
                                     text = text.replace(/\D/g, '');
                                     const prev = [...code]
-                                    console.log(text)
+                                    // console.log(text)
                                     prev[index] = text
                                     setCode(prev)
                                     if (text.length != 0)
@@ -87,9 +90,6 @@ const CodeBox: React.FC<{
                                             ref[index].current.blur()
                                             setFocusNode(undefined)
                                         }
-                                    // else
-
-                                    // setFocusNode(focusnode + 1)
                                 }}
                                 style={{
                                     color: "#000",
@@ -117,7 +117,7 @@ const CodeBox: React.FC<{
                     }
                 }}
                 elevation={7.5}
-                textStyles={{ color: "#fff", fontSize: 30, fontWeight: 'bold' }}
+                textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
             />
         </View>

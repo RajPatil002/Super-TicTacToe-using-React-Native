@@ -1,17 +1,9 @@
-// import WebSocket from 'ws';
-
 class SocketServer {
     websocket: WebSocket;
 
 
     constructor(port: Number) {
-        console.log(port)
         this.websocket = new WebSocket("ws://192.168.1.6:" + port)
-        // console.log(this.websocket)
-        // this.websocket.send(JSON.stringify({
-
-        // }))
-        // this.websocket.onopen = () => console.log("Connected2")
     }
 
     sendReadyStatus(value: boolean) {
@@ -22,7 +14,7 @@ class SocketServer {
         }))
     }
 
-    async sendMove(move: { br: number, bc: number, r: number, c: number, marker: "x" | 'o' }) {
+    async sendMove(move: move) {
         await this.websocket.send(JSON.stringify({ move: move }))
     }
 }
@@ -41,7 +33,7 @@ class Server {
                 return result
             })
             .catch(error => {
-                console.log('error', error)
+                // console.log('error', error)
                 return undefined
             });
         return resp
@@ -59,7 +51,7 @@ class Server {
                 return result
             })
             .catch(error => {
-                console.log('error', error)
+                // console.log('error', error)
                 return undefined
             });
         return resp

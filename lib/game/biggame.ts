@@ -10,14 +10,6 @@ class BigGame {
     }
 
 
-    // updateGameBox(r: number, c: number, value: string) {
-    //     this.bigbox[r][c].box = value;
-    //     if (this.checkBigBoxStatus(value)) {
-    //         // this.bigbox = value
-    //         return value
-    //     }
-    // }
-
     isNextBoxAvailable(r: number, c: number,): boolean {
         if (typeof (this.bigbox[r][c].box) == 'string') {
             return false

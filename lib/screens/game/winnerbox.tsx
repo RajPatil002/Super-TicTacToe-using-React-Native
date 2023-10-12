@@ -2,10 +2,10 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import GlobalStyles from '../../widgets/styles'
 
-type player = {
-    marker: 'x' | 'o',
-    name: string
-}
+// type player = {
+//     marker: 'x' | 'o',
+//     name: string
+// }
 
 const WinnerBox: React.FC<player> = ({ marker, name }) => {
     return (

@@ -4,15 +4,9 @@ class SingleGameBox {
 
     constructor() {
         this.box = Array.from(({ length: 3 }), () => new Array<string>(3).fill(" "));
-        // this.box = this.generateRandomArray(3, 3);
-
-        // console.log(this.box)
     }
 
-
     updateGameBox(r: number, c: number, value: string): boolean {
-        // this.box = value
-        // return true
         if (typeof (this.box) != 'string') {
             this.box[r][c] = value
             if (this.checkBoxStatus(value) == value) {
@@ -20,7 +14,6 @@ class SingleGameBox {
                 return true
             }
         }
-        // console.log(this.checkBoxStatus(value))
         return false
     }
 
@@ -34,7 +27,6 @@ class SingleGameBox {
         return false
     }
 
-
     private checkBoxStatus(value: string): string {
         if (this.checkWinner(value)) {
             return value;
@@ -45,6 +37,7 @@ class SingleGameBox {
         }
         return "";
     }
+
     private checkFilled() {
         for (let i = 0; i < this.box.length; i++) {
             if (this.box[i].includes(' '))
@@ -98,6 +91,7 @@ class SingleGameBox {
         }
         return false
     }
+
     private checkColumn(r: number, c: number, value: string): boolean {
         if (this.box[r][c] == value) {
             if (r < this.box.length - 1)
@@ -107,8 +101,6 @@ class SingleGameBox {
         }
         return false
     }
-
-
 
 }
 
