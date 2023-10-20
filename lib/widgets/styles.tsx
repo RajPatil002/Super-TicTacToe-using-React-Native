@@ -13,10 +13,13 @@ const GlobalStyles = StyleSheet.create({
     center: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    background: {
+        backgroundColor: "#fff",
     },
     button: {
-        borderColor: "#000", borderWidth: 0, borderRadius: 10, backgroundColor: "#6d33ff", paddingHorizontal: 20, margin: 10
+        borderColor: "#000", borderWidth: 2, borderRadius: 10, backgroundColor: "#7b00ff", paddingHorizontal: 20, margin: 10
     },
     buttontext: { color: "#fff", fontSize: 30, fontWeight: 'bold' }
 })

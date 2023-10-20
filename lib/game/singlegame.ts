@@ -1,15 +1,15 @@
 
 class SingleGameBox {
-    box: Array<Array<string>> | string;
+    box: Array<Array<string>> | "x" | "o";
 
     constructor() {
         this.box = Array.from(({ length: 3 }), () => new Array<string>(3).fill(" "));
     }
 
-    updateGameBox(r: number, c: number, value: string): boolean {
+    updateGameBox(r: number, c: number, value: marker): boolean {
         if (typeof (this.box) != 'string') {
-            this.box[r][c] = value
-            if (this.checkBoxStatus(value) == value) {
+            this.box[r][c] = value!
+            if (this.checkBoxStatus(value!) == value) {
                 this.box = value
                 return true
             }

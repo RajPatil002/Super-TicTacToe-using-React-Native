@@ -15,6 +15,7 @@ import PlayerCard from '../../widgets/playercards'
 
 type Props = NativeStackNavigationProp<stackParams, 'OfflineGamePage'>
 type players = Array<player>
+const width = Dimensions.get('window').width
 
 const OfflineGamePage: React.FC<Props> = (props) => {
     // @ts-ignore
@@ -36,11 +37,11 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                 <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <CloseButton
-                            onPress={() => navigation.goBack()} />
-                        <WinnerBox
-                            name={"me"}
-                            marker='x'
-                        />
+                            onPress={() => setWinner(undefined)} />
+                        {winner ? <WinnerBox
+                            name={winner.name}
+                            marker={winner.marker}
+                        /> : <></>}
                     </View>
                 </View>
             </Modal>
@@ -49,6 +50,7 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                     players={players}
                     marker={marker}
                 />
+                <View style={{ height: width / 12 }}></View>
                 <GameBox
                     online={false}
                     bigbox={bigbox}

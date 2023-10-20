@@ -16,8 +16,6 @@ const CodeBox: React.FC<{
     const [isvalid, setValid] = useState(true)
     const ref = Array.from({ length: 4 }, () => useRef<any>(null))
     useEffect(() => {
-        // setJoinBox(visible)
-        // console.log("here is it", visible, ref)
         if (visible && ref[0].current) {
             // // console.log(visible, codebox)
             ref[0].current.focus()
@@ -49,7 +47,6 @@ const CodeBox: React.FC<{
                                 width: Dimensions.get('window').width * 0.125 * 0.8,
                                 height: Dimensions.get('window').width * 0.125 * 0.8
                             }]}>
-                            {/* <TextInput ref={ref[index]} /> */}
                             <TextInput
                                 ref={ref[index]}
                                 numberOfLines={1}
@@ -62,7 +59,6 @@ const CodeBox: React.FC<{
                                 placeholderTextColor={"#000"}
                                 inputMode='numeric'
                                 onFocus={() => {
-                                    // console.log(isvalid, index)
                                     if (!isvalid)
                                         setValid(true)
                                     if ((ref[index].current.isFocused())) {
@@ -80,7 +76,6 @@ const CodeBox: React.FC<{
                                 onChangeText={(text) => {
                                     text = text.replace(/\D/g, '');
                                     const prev = [...code]
-                                    // console.log(text)
                                     prev[index] = text
                                     setCode(prev)
                                     if (text.length != 0)

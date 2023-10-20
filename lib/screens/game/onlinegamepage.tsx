@@ -8,9 +8,11 @@ import { CloseButton, ShadowButton } from '../../widgets/button'
 import GlobalStyles from '../../widgets/styles'
 import { useNavigation } from '@react-navigation/native'
 import BigGame from '../../game/biggame'
+import PlayerCard from '../../widgets/playercards'
+import WinnerBox from './winnerbox'
 
 type Props = NativeStackNavigationProp<stackParams, 'OnlineGamePage'>
-
+const width = Dimensions.get('window').width
 
 const OnlineGamePage: React.FC<Props> = (props) => {
     const [_, setState] = useState()
@@ -23,7 +25,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 
     const [you, setYou] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
     const [opponent, setOpponent] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
-    // const [move, setMove] = useState<move>()
 
     // game
     const [bigbox, __] = useState(new BigGame())
@@ -32,11 +33,9 @@ const OnlineGamePage: React.FC<Props> = (props) => {
     const [availableboxr, setavailableboxr] = useState<number | undefined>()
     const [availableboxc, setavailableboxc] = useState<number | undefined>()
     const [turn, setTurn] = useState(false)
-    // const [marker, setMarker] = useState<'x' | 'o'>('x')
-    // const [winner, setWinner] = useState<player | undefined>()
+    const [winner, setWinner] = useState<player | undefined>()
 
 
-    // const [timer, setTimer] = useState<NodeJS.Timeout | undefined>()
     const [clicked, setClick] = useState(false)
     const [start, setStart] = useState(false)
 
@@ -56,19 +55,13 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                 socket.websocket.onmessage = (message) => {
                     // // console.log("mssg" + (message.data.toString()))
                     const data: ({ move: move } & turn) | players | start | turn = JSON.parse(message.data.toString())
-                    // console.log(data)
+                    console.log(data)
 
                     if ('start' in data) {
                         if (data.start) {
-                            // setCountdown(data.start.countdown)
-                            // setStartCount(true)
                             setStart(true)
                             setTurn(data.turn)
                         }
-                        // // console.log(data.start.countdown)
-                        // if (countdown) {
-                        //     setCountdown()
-                        // }
                     } else if ('move' in data) {
                         // console.log(data.move)
                         const move: move = data.move
@@ -76,14 +69,14 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                         const win = bigbox.bigbox[move.br][move.bc].updateGameBox(move.r, move.c, move.marker)
                         if (win) {
                             if (bigbox.checkBigBoxStatus(move.marker)) {
-                                // console.log(move.marker)
-                                // setWinner(you.marker == move.marker ? you : opponent)
                                 // console.log('die')
+
+                                setWinner(move.marker == you.marker ? { name: "you", marker: you.marker } : { name: "opponent", marker: opponent.marker })
+                                socket.websocket.close()
                                 return
                             }
                         }
                         if (bigbox.isNextBoxAvailable(move.r, move.c)) {
-                            // console.log(move.r, move.c)
                             setavailableboxr(move.r)
                             setavailableboxc(move.c)
                         } else {
@@ -91,10 +84,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                             setavailableboxc(undefined)
                         }
                         setTurn(data.turn)
-                        // setC(count + 1)
-                        // setMarker(move.marker == 'o' ? 'x' : 'o')
-                        // this.sendToOtherPlayer(message.toString(), ws.id)
-                        // this.changeTurn(ws.id)
                     } else if ('players' in data) {
                         setYou(data.players.you)
                         setOpponent(data.players.opponent)
@@ -128,7 +117,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ color: "#000", fontSize: 15, letterSpacing: 2, textTransform: 'capitalize' }}> connect code </Text>
                             <Text style={{ color: "#6d33ff", fontSize: 30, fontWeight: '900', letterSpacing: 5 }}>{port}</Text>
-
                         </View>
 
                         <View style={{ flexDirection: 'row' }}>
@@ -146,12 +134,12 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 
                                 }}>
                                     <View style={{ alignItems: 'flex-start', padding: 20 }}>
-                                        <Text style={{ fontSize: 20, textTransform: 'uppercase', }} numberOfLines={1}>You</Text>
-                                        <Text style={{ color: you.status.ready ? '#3f5' : '#f35' }}>{you.status.ready ? 'Ready' : 'Not Ready'}</Text>
+                                        <Text style={styles.name} numberOfLines={1}>You</Text>
+                                        <Text style={[styles.status, { color: you.status.ready ? '#3f5' : '#f35' }]}>{you.status.ready ? 'Ready' : 'Not Ready'}</Text>
                                     </View>
                                 </View>
                             </View>
-                            <View style={{ width: 75, backgroundColor: "#fff" }}></View>
+                            <View style={{ width: width / 6, backgroundColor: "#fff" }}></View>
                             <View style={{
                                 borderWidth: 0.5, borderColor: "#000",
                                 justifyContent: 'center', borderRadius: 17.5,
@@ -165,8 +153,8 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                                     width: Dimensions.get('window').width * 0.3,
                                 }}>
                                     <View style={{ alignItems: 'flex-start', padding: 20 }}>
-                                        <Text style={{ fontSize: 20, textTransform: 'uppercase', }} numberOfLines={1}>{opponent.status.connected ? 'opponent' : 'waiting'}</Text>
-                                        <Text style={{ color: opponent.status.ready ? '#3f5' : '#f35' }}>{opponent.status.ready ? 'Ready' : 'Not Ready'}</Text>
+                                        <Text style={styles.name} numberOfLines={1}>{opponent.status.connected ? 'opponent' : 'waiting'}</Text>
+                                        <Text style={[styles.status, { color: opponent.status.ready ? '#3f5' : '#f35' }]}>{opponent.status.ready ? 'Ready' : 'Not Ready'}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -188,7 +176,27 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                     </View>
                 </View>
             </Modal>
+            <Modal
+                visible={winner != undefined}
+                onRequestClose={() => navigation.goBack()}
+                transparent>
+                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                    <View style={[GlobalStyles.center, styles.box]}>
+                        <CloseButton
+                            onPress={() => setWinner(undefined)} />
+                        {winner ? <WinnerBox
+                            name={winner.name}
+                            marker={winner.marker}
+                        /> : <></>}
+                    </View>
+                </View>
+            </Modal>
             <View style={styles.gridbackground}>
+                <PlayerCard
+                    marker={turn ? you.marker : opponent.marker}
+                    players={[{ marker: you.marker, name: "you" }, { marker: opponent.marker, name: 'opponent' }]}
+                />
+                <View style={{ height: width / 12 }}></View>
                 <GameBox
                     online={true}
                     bigbox={bigbox}
@@ -212,12 +220,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 export default OnlineGamePage
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 24,
-        fontWeight: '600',
-        alignSelf: 'center',
-        color: "#0ff",
-    },
     window: {
         alignContent: 'center',
         justifyContent: "center",
@@ -227,4 +229,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: 'center',
     },
+    box: { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 },
+    name: { fontSize: width / 24, textTransform: 'uppercase', color: "#cfcfcf", fontWeight: 'bold' },
+    status: { fontSize: width / 32, textTransform: 'uppercase', }
 })

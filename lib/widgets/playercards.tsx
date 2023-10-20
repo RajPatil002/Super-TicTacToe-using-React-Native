@@ -1,5 +1,8 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
+const width = Dimensions.get('window').width
 
 const PlayerCard: React.FC<{ players: Array<player>, marker: marker }> = ({ players, marker }) => {
     return (
@@ -14,12 +17,14 @@ const PlayerCard: React.FC<{ players: Array<player>, marker: marker }> = ({ play
                     <View style={{
                         backgroundColor: "#000",
                         justifyContent: 'center', borderRadius: 15,
-                        width: Dimensions.get('window').width * 0.4,
-
+                        width: width * 0.4,
                     }}>
-                        <View style={{ alignItems: 'flex-start', padding: 20 }}>
+                        <View style={{ alignItems: 'flex-start', padding: width / 36 }}>
                             <Text style={styles.name} numberOfLines={1}>{player.name}</Text>
-                            <Text style={styles.marker}>{player.marker}</Text>
+                            {player.marker == 'x'
+                                ? <Icon name='times' size={20} color={'#7b00ff'} />
+                                : <Icon name='circle-notch' size={20} color={'#FF6D33'} />}
+
                         </View>
                     </View>
                 </View>))}
@@ -30,12 +35,11 @@ const PlayerCard: React.FC<{ players: Array<player>, marker: marker }> = ({ play
 export default PlayerCard
 
 const styles = StyleSheet.create({
-    background: { flexDirection: 'row', width: Dimensions.get('window').width, justifyContent: 'space-between', padding: 10 },
+    background: { flexDirection: 'row', width: width, justifyContent: 'space-between', padding: width / 36, },
     active: {
         borderWidth: 0.5, borderColor: "#000",
         justifyContent: 'center', borderRadius: 17.5,
-        padding: 5,
+        padding: width / 72,
     },
-    name: { fontSize: 25, textTransform: 'uppercase', fontWeight: 'bold', color: '#fff' },
-    marker: { color: '#6d33ff', fontSize: 20, fontWeight: 'bold' }
+    name: { fontSize: width / 20, textTransform: 'uppercase', fontWeight: 'bold', color: '#fff' },
 })

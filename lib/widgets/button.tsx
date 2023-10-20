@@ -1,6 +1,7 @@
 
 import { Button, ColorValue, GestureResponderEvent, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import React, { JSXElementConstructor, ReactNode, useState } from 'react'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 
 const ShadowButton: React.FC<{
@@ -12,16 +13,12 @@ const ShadowButton: React.FC<{
     onPress: (() => void) | null | undefined
 }> = ({ label,
     textStyles,
-    shadowColor = "#c5c5c5",
+    shadowColor = "#c3c3c3",
     style = { margin: 0 },
     elevation = 5,
     onPress
 }) => {
-        // const [margin, _] = style.margin ? useState(style.margin) : useState(0)
         const { margin, ...newstyle } = style
-        // const margin = style.margin ?? 0
-        // style.margin = 0
-        // // console.log(style.margin, style)
         const [pressed, setIsPressed] = useState(false)
         return <Pressable
             onPress={onPress ? () => setTimeout(onPress, 100) : null}
@@ -29,14 +26,14 @@ const ShadowButton: React.FC<{
             onPressOut={() => setIsPressed(false)}>
             <View
                 style={{ position: 'relative', flexDirection: 'row', margin: margin, }}>
-                <View style={[newstyle, { margin: 0, marginLeft: elevation, marginTop: elevation, backgroundColor: shadowColor, padding: 10 },]}>
+                <View style={[newstyle, { margin: 0, marginLeft: elevation, marginTop: elevation, backgroundColor: shadowColor, padding: 10, borderColor: shadowColor },]}>
                     <Text style={[textStyles, { color: shadowColor },]}>
                         {label}
                     </Text>
                 </View>
                 <View
                     style={[
-                        { backgroundColor: "#fff", padding: 10, borderWidth: 1 },
+                        { backgroundColor: "#fff", padding: 10, },
                         newstyle, { position: 'absolute' },
                         pressed ? { marginTop: elevation, marginLeft: elevation } : {}]}>
                     <Text style={[{ color: "#000" }, textStyles]}>
@@ -53,8 +50,8 @@ const CloseButton: React.FC<{
     return (
         <Pressable
             onPress={onPress}
-            style={{ alignSelf: 'flex-end', borderWidth: 1, borderRadius: 50, width: 35, height: 35, justifyContent: 'center', }}>
-            <Text style={{ color: "#fa5555", fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>X</Text>
+            style={{ alignSelf: 'flex-end', justifyContent: 'center', alignItems: 'center' }}>
+            <FontAwesome5Icon name='times-circle' size={30} color={"#fa5555"} />
         </Pressable>)
 }
 

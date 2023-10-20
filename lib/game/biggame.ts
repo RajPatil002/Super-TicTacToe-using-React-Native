@@ -18,13 +18,13 @@ class BigGame {
     }
 
 
-    checkBigBoxStatus(value: string) {
-        if (this.checkBigDiagonal1(0, 0, value) || this.checkBigDiagonal2(this.bigbox.length - 1, 0, value)) {
+    checkBigBoxStatus(value: marker) {
+        if (this.checkBigDiagonal1(0, 0, value!) || this.checkBigDiagonal2(this.bigbox.length - 1, 0, value!)) {
             return true
         } else {
             for (let i = 0; i < this.bigbox.length; i++) {
-                let row = this.checkBigRow(i, 0, value)
-                let col = this.checkBigColumn(0, i, value)
+                let row = this.checkBigRow(i, 0, value!)
+                let col = this.checkBigColumn(0, i, value!)
                 if (row || col) {
                     return true
                 }

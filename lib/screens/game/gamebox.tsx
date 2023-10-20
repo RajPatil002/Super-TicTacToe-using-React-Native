@@ -1,6 +1,10 @@
 import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BigGame from '../../game/biggame'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
+const width = (Dimensions.get('window').width)
+const smallboxwidth = width / 12
 
 
 const GameBox: React.FC<{
@@ -12,7 +16,7 @@ const GameBox: React.FC<{
     nextboxcolumn: number | undefined,
     turn?: boolean
 }> = ({ online, bigbox, turn, nextboxrow, nextboxcolumn, onMark, marker }) => {
-    // console.log(online, turn, nextboxrow, nextboxcolumn,)
+    console.log(smallboxwidth / 20)
     const [clicked, setClick] = useState(false)
 
     return (
@@ -41,28 +45,32 @@ const GameBox: React.FC<{
                                     renderItem={(singleboxrow) => {
                                         return <View style={{ flexDirection: 'row', }} >
                                             {singleboxrow.item.map((singleboxitem, index) => {
+                                                const isavailable = (nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
                                                 return <Pressable
                                                     onPress={turn
-                                                        ? ((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                        ? (isavailable
                                                             ? () => {
                                                                 setClick(true)
                                                                 onMark(bigboxrow.index, bigindex, singleboxrow.index, index)
                                                                 setClick(false)
                                                             }
                                                             : null)
-                                                        : () => {
-                                                            const move: move = { br: bigboxrow.index, bc: bigindex, r: singleboxrow.index, c: index, marker: 'x' }
-                                                            // console.log(move, "remove this from box click")
-                                                        }}
+                                                        : null}
                                                     key={singleboxrow.index + "" + index}
                                                     style={(turn
-                                                        ? ((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                        ? (isavailable
                                                             ? styles.pressboxavailable
-                                                            : styles.pressbox)
+                                                            : [styles.pressbox, singleboxitem == ' ' ? {} : { borderWidth: 0 }])
                                                         : styles.pressboxonline)}
                                                 >
                                                     <View style={styles.center}>
-                                                        <Text style={[styles.marker, { color: singleboxitem == marker ? "#6d33ff" : '#000' }]}>{singleboxitem}</Text>
+                                                        {singleboxitem != ' '
+                                                            ? (singleboxitem == 'x'
+                                                                ? <Icon name='times' size={width / 15} color={'#7b00ff'} />
+                                                                : <Icon name='circle-notch' size={width / 18} color={'#FF6D33'} />
+                                                            )
+                                                            : <></>
+                                                        }
                                                     </View>
                                                 </Pressable>
                                             })}
@@ -71,9 +79,10 @@ const GameBox: React.FC<{
                                     }}
                                 />
                                 : <View style={styles.winnerbox}>
-                                    <Text style={{ fontSize: 50, color: '#000', fontWeight: 'bold' }}>
-                                        {smallbox.box}
-                                    </Text>
+                                    {smallbox.box == 'x'
+                                        ? <Icon name='times' size={width / 15} color={'#7b00ff'} />
+                                        : <Icon name='circle-notch' size={width / 18} color={'#FF6D33'} />}
+
                                 </View>}
                         </View>)}
                     </View>
@@ -101,16 +110,25 @@ const GameBox: React.FC<{
                                     renderItem={(singleboxrow) => {
                                         return <View style={{ flexDirection: 'row', }} >
                                             {singleboxrow.item.map((singleboxitem, index) => {
+                                                const isavailable = (nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
                                                 return <Pressable
-                                                    onPress={((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                    onPress={(isavailable
                                                         ? () => onMark(bigboxrow.index, bigindex, singleboxrow.index, index)
                                                         : null)}
                                                     key={singleboxrow.index + "" + index}
-                                                    style={((nextboxrow == undefined || (bigboxrow.index == nextboxrow && bigindex == nextboxcolumn)) && singleboxitem == ' '
+                                                    style={(isavailable
                                                         ? styles.pressboxavailable
-                                                        : styles.pressbox)}
+                                                        : [styles.pressbox, singleboxitem == ' ' ? {} : { borderWidth: 0 }])}
                                                 >
-                                                    <View style={styles.center}><Text style={[styles.marker, { color: '#000', }]}>{singleboxitem}</Text></View>
+                                                    <View style={styles.center}>
+                                                        {singleboxitem != ' '
+                                                            ? (singleboxitem == 'x'
+                                                                ? <Icon name='times' size={width / 15} color={'#7b00ff'} />
+                                                                : <Icon name='circle-notch' size={width / 18} color={'#FF6D33'} />
+                                                            )
+                                                            : <></>
+                                                        }
+                                                    </View>
                                                 </Pressable>
                                             })}
                                         </View>
@@ -118,9 +136,10 @@ const GameBox: React.FC<{
                                     }}
                                 />
                                 : <View style={styles.winnerbox}>
-                                    <Text style={{ fontSize: 50, color: '#000', fontWeight: 'bold' }}>
-                                        {smallbox.box}
-                                    </Text>
+                                    {smallbox.box == 'x'
+                                        ? <Icon name='times' size={width / 4.5} color={'#7b00ff'} />
+                                        : <Icon name='circle-notch' size={width / 5.5} color={'#FF6D33'} />
+                                    }
                                 </View>}
                         </View>)}
                     </View>
@@ -135,58 +154,58 @@ const styles = StyleSheet.create({
 
     gamebox: {
         flex: 1,
-        alignSelf: 'stretch',
-        padding: (Dimensions.get('window').width / 12) * 0.05,
+        // alignSelf: 'stretch',
+        padding: smallboxwidth / 18,
         justifyContent: 'center',
         alignItems: 'center',
     },
     bigbox: {
-        margin: (Dimensions.get('window').width / 12) * 0.2,
-        borderWidth: 2,
+        margin: smallboxwidth / 6,
+        borderWidth: smallboxwidth / 15,
         borderColor: '#fa5555',
     },
     bigboxonline: {
-        margin: (Dimensions.get('window').width / 12) * 0.2,
-        borderWidth: 2,
+        margin: smallboxwidth / 6,
+        borderWidth: smallboxwidth / 15,
         borderColor: '#000',
     },
     bigboxtomark: {
-        margin: (Dimensions.get('window').width / 12) * 0.2,
-        borderWidth: 4,
+        margin: smallboxwidth / 6,
+        borderWidth: smallboxwidth / 15,
         borderColor: '#228B22',
     },
     pressboxavailable: {
-        borderWidth: 1.5,
+        borderWidth: smallboxwidth / 20,
         borderColor: '#228B22',
-        height: (Dimensions.get('window').width / 12),
-        width: (Dimensions.get('window').width / 12),
-        margin: (Dimensions.get('window').width / 12) / 18,
+        height: smallboxwidth,
+        width: smallboxwidth,
+        margin: smallboxwidth / 24,
         justifyContent: 'center',
         alignItems: 'center',
     },
     pressboxonline: {
-        borderWidth: 1.5,
+        borderWidth: 1,
         borderColor: '#000',
-        height: (Dimensions.get('window').width / 12),
-        width: (Dimensions.get('window').width / 12),
-        margin: (Dimensions.get('window').width / 12) / 18,
+        height: smallboxwidth,
+        width: smallboxwidth,
+        margin: smallboxwidth / 24,
         justifyContent: 'center',
         alignItems: 'center',
     },
     pressbox: {
-        borderWidth: 1,
+        borderWidth: smallboxwidth / 30,
         borderColor: '#fa5555',
-        height: (Dimensions.get('window').width / 12),
-        width: (Dimensions.get('window').width / 12),
-        margin: (Dimensions.get('window').width / 12) / 18,
+        height: smallboxwidth,
+        width: smallboxwidth,
+        margin: smallboxwidth / 24,
         justifyContent: 'center',
         alignItems: 'center',
     },
     winnerbox: {
         borderWidth: 3,
         borderColor: '#000',
-        height: ((Dimensions.get('window').width * 3) / 12),
-        width: ((Dimensions.get('window').width * 3) / 12),
+        height: (smallboxwidth * 3),
+        width: (smallboxwidth * 3),
         margin: (Dimensions.get('window').width / 56),
         justifyContent: 'center',
         alignItems: 'center'
@@ -195,5 +214,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    marker: { fontSize: 25, fontWeight: 'bold' }
 })

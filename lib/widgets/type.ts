@@ -1,9 +1,9 @@
 
-type move = { br: number, bc: number, r: number, c: number, marker: string }
 type marker = 'x' | 'o' | undefined
+type move = { br: number, bc: number, r: number, c: number, marker: marker }
 type player = {
     marker: marker,
-    name: string
+    name?: string
 }
 
 
@@ -20,4 +20,3 @@ type start = {
 }
 
 type turn = { turn: boolean }
-// type status = {

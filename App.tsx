@@ -39,7 +39,7 @@ function App(): JSX.Element {
   return (
     <NavigationContainer >
       <Stack.Navigator initialRouteName='HomePage'>
-        <Stack.Screen name='HomePage' component={HomePage} />
+        <Stack.Screen name='HomePage' component={HomePage} options={{ headerShown: false }} />
         {/* @ts-ignore */}
         <Stack.Screen name='OnlineGamePage' component={OnlineGamePage} options={{ headerShown: false }} />
         {/* @ts-ignore */}
