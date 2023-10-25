@@ -22,7 +22,7 @@ export type stackParams = {
   HomePage: undefined;
   OnlineGamePage: {
     port: string,
-    createdbyid: string | undefined
+    createdbyid?: string
   };
   OfflineGamePage: {
     players: Array<{
@@ -51,11 +51,11 @@ function App(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  safeareaview: {
-    backgroundColor: "#fff",
-    flex: 1
-  },
-});
+// const styles = StyleSheet.create({
+//   safeareaview: {
+//     backgroundColor: "#fff",
+//     flex: 1
+//   },
+// });
 
 export default App;

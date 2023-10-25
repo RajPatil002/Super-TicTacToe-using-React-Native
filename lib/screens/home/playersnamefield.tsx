@@ -6,9 +6,9 @@ import { stackParams } from '../../../App'
 import { ShadowButton } from '../../widgets/button'
 
 const PlayersNameField: React.FC<{
-    navigation: NativeStackNavigationProp<stackParams>
-}> = ({ navigation }) => {
-    const [players, _] = useState<Array<{ name: string, marker: 'x' | 'o' | undefined }>>([{ name: 'player1', marker: undefined }, { name: 'player2', marker: undefined }])
+    onStart: (players: Array<player>) => void
+}> = ({ onStart }) => {
+    const [players, _] = useState<Array<player>>([{ name: 'player1', marker: undefined }, { name: 'player2', marker: undefined }])
     return (
         <View style={[GlobalStyles.center, { flex: 0, }]}>
             <View style={{
@@ -65,22 +65,9 @@ const PlayersNameField: React.FC<{
                             ? 'x'
                             : 'o')
                         players[1].marker = players[0].marker == 'x' ? 'o' : 'x'
-                        // // console.log(players)
 
-                        navigation.navigate('OfflineGamePage', { players: players })
-                        // getMarker() {
-                        //     let marker = ''
-                        //     if (this.markers.length == 0) {
-                        //         marker = 
-                        //     }
-                        //     else {
-                        //         marker = (this.markers.includes('x')
-                        //             ? 'o'
-                        //             : 'x')
-                        //     }
-                        //     this.markers.push(marker)
-                        //     return marker
-                        // }
+                        onStart(players)
+
                     }}
                 />
             </View>

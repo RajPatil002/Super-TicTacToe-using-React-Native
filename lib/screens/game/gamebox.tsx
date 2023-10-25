@@ -1,10 +1,12 @@
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, Pressable, StyleSheet, Text, View, Appearance } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BigGame from '../../game/biggame'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const width = (Dimensions.get('window').width)
 const smallboxwidth = width / 12
+const theme = Appearance.getColorScheme()
+const light = theme != 'dark'
 
 
 const GameBox: React.FC<{
@@ -162,21 +164,21 @@ const styles = StyleSheet.create({
     bigbox: {
         margin: smallboxwidth / 6,
         borderWidth: smallboxwidth / 15,
-        borderColor: '#fa5555',
+        borderColor: light ? '#fa5555' : '#d92525',
     },
     bigboxonline: {
         margin: smallboxwidth / 6,
         borderWidth: smallboxwidth / 15,
-        borderColor: '#000',
+        borderColor: light ? "#131313" : '#fefefe',
     },
     bigboxtomark: {
         margin: smallboxwidth / 6,
         borderWidth: smallboxwidth / 15,
-        borderColor: '#228B22',
+        borderColor: light ? '#228B22' : "#30c930",
     },
     pressboxavailable: {
         borderWidth: smallboxwidth / 20,
-        borderColor: '#228B22',
+        borderColor: light ? '#228B22' : "#30c930",
         height: smallboxwidth,
         width: smallboxwidth,
         margin: smallboxwidth / 24,
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
     },
     pressboxonline: {
         borderWidth: 1,
-        borderColor: '#000',
+        borderColor: light ? "#131313" : '#fefefe',
         height: smallboxwidth,
         width: smallboxwidth,
         margin: smallboxwidth / 24,
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
     },
     pressbox: {
         borderWidth: smallboxwidth / 30,
-        borderColor: '#fa5555',
+        borderColor: light ? '#fa5555' : '#d92525',
         height: smallboxwidth,
         width: smallboxwidth,
         margin: smallboxwidth / 24,

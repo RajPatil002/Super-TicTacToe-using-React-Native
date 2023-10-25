@@ -1,9 +1,12 @@
+const ip = "192.168.1.10:"
+
+
 class SocketServer {
     websocket: WebSocket;
 
 
     constructor(port: Number) {
-        this.websocket = new WebSocket("ws://192.168.1.6:" + port)
+        this.websocket = new WebSocket("ws://" + ip + port)
     }
 
     sendReadyStatus(value: boolean) {
@@ -21,10 +24,11 @@ class SocketServer {
 
 
 class Server {
-    static url: string = 'http://192.168.1.6'
-    static port: string = ':9999';
+    static url: string = 'http://' + ip
+    static port: string = '9999';
     static async getPort(): Promise<{ port: string, createdbyid: string } | undefined> {
         // return { port: 1000 }
+        console.log(this.url + this.port)
         const resp = await fetch(this.url + this.port + "/creategamesocket", {
             method: 'POST',
         })
@@ -39,7 +43,7 @@ class Server {
         return resp
     }
 
-    static async getPortInformation(gameport: string): Promise<{ port: string } | undefined> {
+    static async getPortInformation(gameport: string): Promise<portinfo> {
         const resp = await fetch(this.url + this.port + "/portinfo", {
             method: 'POST',
             headers: {
@@ -48,10 +52,11 @@ class Server {
         })
             .then(response => response.json())
             .then(result => {
+                console.log('result', result)
                 return result
             })
             .catch(error => {
-                // console.log('error', error)
+                console.log('error', error)
                 return undefined
             });
         return resp

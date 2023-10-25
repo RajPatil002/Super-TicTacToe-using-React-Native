@@ -1,5 +1,5 @@
-import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { Appearance, BackHandler, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import GlobalStyles from '../../widgets/styles'
 import GameBox from './gamebox'
 import BigGame from '../../game/biggame'
@@ -10,12 +10,14 @@ import WinnerBox from './winnerbox'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { stackParams } from '../../../App'
 import PlayerCard from '../../widgets/playercards'
+import QuitConfirmBox from '../../widgets/quitconfirmbox'
 
 
 
 type Props = NativeStackNavigationProp<stackParams, 'OfflineGamePage'>
 type players = Array<player>
 const width = Dimensions.get('window').width
+const theme = Appearance.getColorScheme()
 
 const OfflineGamePage: React.FC<Props> = (props) => {
     // @ts-ignore
@@ -26,8 +28,18 @@ const OfflineGamePage: React.FC<Props> = (props) => {
     const [availableboxc, setavailableboxc] = useState<number | undefined>()
     const [marker, setMarker] = useState<'x' | 'o'>('x')
     const [winner, setWinner] = useState<player | undefined>()
+    const [quitbox, setQuitBox] = useState(false)
     const navigation = useNavigation()
-    // console.log(players)
+
+
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            console.log("back")
+            setQuitBox(true)
+            return true
+        })
+    }, []);
+
     return (
         <View style={styles.window}>
             <Modal
@@ -42,6 +54,21 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                             name={winner.name}
                             marker={winner.marker}
                         /> : <></>}
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                visible={quitbox}
+                onRequestClose={() => setQuitBox(false)}
+                transparent>
+                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                    <View style={[GlobalStyles.center, styles.box]}>
+                        <QuitConfirmBox onPress={(decision) => {
+                            setQuitBox(false)
+                            if (decision) {
+                                navigation.goBack()
+                            }
+                        }} />
                     </View>
                 </View>
             </Modal>
@@ -95,5 +122,6 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: "center",
         flex: 1,
+        backgroundColor: theme == 'dark' ? "#131313" : '#fefefe'
     }
 })

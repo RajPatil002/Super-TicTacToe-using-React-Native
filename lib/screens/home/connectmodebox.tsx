@@ -7,9 +7,10 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { stackParams } from '../../../App'
 
 const ConnectModeBox: React.FC<{
-    visible: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
-    navigation: NativeStackNavigationProp<stackParams>,
-}> = ({ visible, navigation }) => {
+    visiblecodebox: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+    // navigation: NativeStackNavigationProp<stackParams>,
+    onStart: (port: string, createdbyid?: string) => void
+}> = ({ visiblecodebox: visible, onStart }) => {
     const [_, setBox] = visible
     const [clicked, setClick] = useState(false)
     return (
@@ -22,7 +23,7 @@ const ConnectModeBox: React.FC<{
                     const resp: { port: string, createdbyid: string } | undefined = await Server.getPort()
                     console.log("Error?", resp)
                     if (resp != undefined) {
-                        navigation.navigate('OnlineGamePage', { port: resp.port, createdbyid: resp.createdbyid })
+                        onStart(resp.port, resp.createdbyid)
                     } else {
                         console.log("Error")
                     }

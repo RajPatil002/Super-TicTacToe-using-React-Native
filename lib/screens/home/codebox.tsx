@@ -6,27 +6,40 @@ import GlobalStyles from '../../widgets/styles'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { stackParams } from '../../../App'
 
+const width = Dimensions.get('window').width
 
 const CodeBox: React.FC<{
-    visible: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
-    navigation: NativeStackNavigationProp<stackParams>
-}> = ({ visible, navigation }) => {
+    visiblecodebox: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+    onStart: (port: string) => void
+}> = ({ visiblecodebox: visible, onStart }) => {
+
+    const [_, setBox] = visible
+
+    // room code
     const [code, setCode] = useState(['', '', '', ''])
+    // const [code, setCode] = useState(['1', '0', '0', '0'])
+
+    // text input validations and focus nodes
     const [focusnode, setFocusNode] = useState<undefined | number>(undefined)
     const [isvalid, setValid] = useState(true)
+    const [isvalidcode, setValidCode] = useState(true)
     const ref = Array.from({ length: 4 }, () => useRef<any>(null))
+
     useEffect(() => {
         if (visible && ref[0].current) {
             // // console.log(visible, codebox)
             ref[0].current.focus()
         }
     }, [visible])
+
+
+
     return (
         <View style={[GlobalStyles.center, { flex: 0, }]}>
-            <Text style={{ color: "#000", fontSize: 30, fontWeight: 'bold', textTransform: 'uppercase' }}>Enter code</Text>
+            <Text style={{ color: "#000", fontSize: width / 14, fontWeight: 'bold', textTransform: 'uppercase' }}>Enter code</Text>
             <View style={{
                 flexDirection: 'row', alignItems: 'center',
-                borderWidth: isvalid ? 0 : 2, borderRadius: 10, borderColor: "#fa5555",
+                borderWidth: isvalid ? 0 : width / 180, borderRadius: 10, borderColor: "#fa5555",
                 paddingHorizontal: 5
             }}>
                 {code.map((singledigit, index) => {
@@ -34,7 +47,7 @@ const CodeBox: React.FC<{
                     // // console.log(focusnode)
                     return <View
                         style={{
-                            borderWidth: isFocused ? 5 : 0, borderRadius: 10,
+                            borderWidth: isFocused ? width / 120 : 0, borderRadius: 10,
                             margin: 5,
                             backgroundColor: isFocused ? "#fff" : "#ddd"
                         }}
@@ -44,8 +57,8 @@ const CodeBox: React.FC<{
                                 flex: 0,
                                 margin: isFocused
                                     ? 2 : 0,
-                                width: Dimensions.get('window').width * 0.125 * 0.8,
-                                height: Dimensions.get('window').width * 0.125 * 0.8
+                                width: width * 0.125 * 0.8,
+                                height: width * 0.125 * 0.8
                             }]}>
                             <TextInput
                                 ref={ref[index]}
@@ -61,6 +74,8 @@ const CodeBox: React.FC<{
                                 onFocus={() => {
                                     if (!isvalid)
                                         setValid(true)
+                                    if (!isvalidcode)
+                                        setValidCode(true)
                                     if ((ref[index].current.isFocused())) {
                                         setFocusNode(index)
                                     }
@@ -74,7 +89,9 @@ const CodeBox: React.FC<{
                                     }
                                 }}
                                 onChangeText={(text) => {
+                                    console.log(text)
                                     text = text.replace(/\D/g, '');
+                                    console.log(text)
                                     const prev = [...code]
                                     prev[index] = text
                                     setCode(prev)
@@ -98,14 +115,18 @@ const CodeBox: React.FC<{
                 })}
             </View>
             {isvalid ? null : <Text style={{ color: "#fa5555" }}>Enter CODE</Text>}
+            {isvalidcode ? null : <Text style={{ color: "#fa5555" }}>Invalid CODE</Text>}
             <ShadowButton
                 label='Join Game'
                 onPress={async () => {
                     const port = code.join('')
                     if (port.length == 4) {
-                        const resp: { port: string } | undefined = await Server.getPortInformation(port)
-                        if (resp != undefined) {
-                            navigation.navigate('OnlineGamePage', { port: resp.port, createdbyid: undefined })
+                        const resp: portinfo = await Server.getPortInformation(port)
+                        if (resp && resp.port && resp.connected > 0) {
+                            setBox(false)
+                            onStart(resp.port)
+                        } else {
+                            setValidCode(false)
                         }
                     } else {
                         setValid(false)

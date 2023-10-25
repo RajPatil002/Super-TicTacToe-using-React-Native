@@ -1,17 +1,27 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Appearance, Dimensions, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const width = Dimensions.get('window').width
+const theme = Appearance.getColorScheme()
+const light = theme != 'dark'
 
-const PlayerCard: React.FC<{ players: Array<player>, marker: marker }> = ({ players, marker }) => {
+const PlayerCard: React.FC<{ players: Array<player>, marker?: marker }> = ({ players, marker }) => {
     return (
         <View style={styles.background}>
             {players.map((player, index) => (
                 <View
                     key={index}
                     style={[styles.active, {
-                        backgroundColor: marker == player.marker ? '#3f5' : '#000'
+                        backgroundColor: marker
+                            ? marker == player.marker
+                                ? '#3f5'
+                                : light
+                                    ? "#131313"
+                                    : '#fefefe'
+                            : light
+                                ? "#131313"
+                                : '#fefefe'
                     }]}>
 
                     <View style={{
@@ -21,9 +31,11 @@ const PlayerCard: React.FC<{ players: Array<player>, marker: marker }> = ({ play
                     }}>
                         <View style={{ alignItems: 'flex-start', padding: width / 36 }}>
                             <Text style={styles.name} numberOfLines={1}>{player.name}</Text>
-                            {player.marker == 'x'
-                                ? <Icon name='times' size={20} color={'#7b00ff'} />
-                                : <Icon name='circle-notch' size={20} color={'#FF6D33'} />}
+                            {marker
+                                ? player.marker == 'x'
+                                    ? <Icon name='times' size={width / 17} color={'#7b00ff'} />
+                                    : <Icon name='circle-notch' size={width / 20} color={'#FF6D33'} />
+                                : <Icon name='spinner' size={width / 20} color={light ? "#131313" : '#fefefe'} />}
 
                         </View>
                     </View>
