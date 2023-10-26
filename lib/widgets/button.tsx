@@ -1,6 +1,6 @@
 
-import { Button, ColorValue, GestureResponderEvent, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
-import React, { JSXElementConstructor, ReactNode, useState } from 'react'
+import { ColorValue, Pressable, StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native'
+import React, { useState } from 'react'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 

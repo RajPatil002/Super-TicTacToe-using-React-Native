@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     header: {
         fontSize: width / 15,
         fontWeight: 'bold',
-        // alignSelf: 'center',
         color: "#131313",
         textTransform: 'uppercase',
         margin: 5

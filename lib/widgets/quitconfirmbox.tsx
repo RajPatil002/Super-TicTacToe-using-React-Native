@@ -15,7 +15,7 @@ const QuitConfirmBox: React.FC<{
                 color: "#131313",
                 margin: width / 30
             }}>Do you want to quit the game?</Text>
-            <View style={{ flexDirection: 'row', backgroundColor: "#f00", justifyContent: "space-around" }}>
+            <View style={{ flexDirection: 'row', justifyContent: "space-around" }}>
                 <ShadowButton
                     label='Quit'
                     style={styles.button}

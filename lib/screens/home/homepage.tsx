@@ -1,7 +1,6 @@
 
-import { Animated, Dimensions, Easing, Image, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { Server } from '../../game/serverconnect'
+import { Dimensions, Image, Modal, StyleSheet, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { stackParams } from '../../../App'
@@ -9,12 +8,12 @@ import GlobalStyles from '../../widgets/styles'
 import CodeBox from './codebox'
 import ConnectModeBox from './connectmodebox'
 import { CloseButton, ShadowButton } from '../../widgets/button'
-import WinnerBox from '../game/winnerbox'
 import PlayersNameField from './playersnamefield'
 import GameRules from '../game/gamerules'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const HomePage: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<stackParams>>()
@@ -52,7 +51,7 @@ const HomePage: React.FC = () => {
                 visible={onlinemode}
                 onRequestClose={codebox[0] ? () => codebox[1](false) : () => setOnlineModeVisible(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, style.box]}>
                         <CloseButton
                             onPress={codebox[0] ? () => {
@@ -82,7 +81,7 @@ const HomePage: React.FC = () => {
                 visible={namefields}
                 onRequestClose={() => setNameField(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, style.box]}>
                         <CloseButton
                             onPress={() => setNameField(false)} />
@@ -100,7 +99,7 @@ const HomePage: React.FC = () => {
                 visible={rulesbox}
                 onRequestClose={() => setRulesBox(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, style.box]}>
                         <CloseButton
                             onPress={() => setRulesBox(false)} />
@@ -112,20 +111,15 @@ const HomePage: React.FC = () => {
 
             <View style={{ flex: 1, }}>
                 <View style={{ justifyContent: 'center', alignContent: 'center' }}>
-                    <View style={{ flex: 1 }}></View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ flex: 4 }}></View>
+                    <View style={{ flex: 6, justifyContent: 'center', alignItems: 'center', alignSelf: 'flex-end' }}>
                         <Image
                             source={bottom}
-                            style={{
-                                margin: 20,
-                                width: Dimensions.get('window').width,
-                                height: Dimensions.get('window').width,
-                                position: 'relative'
-                            }}
+                            style={style.image}
                             width={100}
                             resizeMode='contain'
                         />
-                        <View style={[{ position: 'absolute', }, GlobalStyles.center]}>
+                        <View style={[{ position: 'absolute', flex: 1 }, GlobalStyles.center]}>
                             <ShadowButton label={'Online'}
                                 textStyles={GlobalStyles.buttontext}
                                 style={GlobalStyles.button}
@@ -148,11 +142,7 @@ const HomePage: React.FC = () => {
                     <View style={style.banner}>
                         <Image
                             source={title}
-                            style={{
-                                margin: 20,
-                                width: Dimensions.get('window').width,
-                                height: Dimensions.get('window').width,
-                            }}
+                            style={style.image}
                             width={100}
                             resizeMode='contain'
                         />
@@ -183,6 +173,11 @@ const style = StyleSheet.create({
     bottom: {
         flex: 1,
         alignItems: 'center',
+    },
+    image: {
+        margin: 20,
+        width: width,
+        height: height * 0.6,
     },
 
 })

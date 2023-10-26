@@ -1,10 +1,8 @@
-import { Dimensions, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Server } from '../../game/serverconnect'
 import { ShadowButton } from '../../widgets/button'
 import GlobalStyles from '../../widgets/styles'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { stackParams } from '../../../App'
 
 const width = Dimensions.get('window').width
 
@@ -132,7 +130,7 @@ const CodeBox: React.FC<{
                         setValid(false)
                     }
                 }}
-                elevation={7.5}
+                elevation={5}
                 textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
             />

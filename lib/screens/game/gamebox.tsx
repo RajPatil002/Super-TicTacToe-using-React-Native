@@ -1,5 +1,5 @@
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View, Appearance } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Dimensions, FlatList, Pressable, StyleSheet, View, Appearance } from 'react-native'
+import React, { useState } from 'react'
 import BigGame from '../../game/biggame'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -13,12 +13,11 @@ const GameBox: React.FC<{
     online: boolean,
     bigbox: BigGame,
     onMark: (br: number, bc: number, r: number, c: number) => void,
-    marker?: 'x' | 'o',
+    marker?: marker,
     nextboxrow: number | undefined,
     nextboxcolumn: number | undefined,
     turn?: boolean
 }> = ({ online, bigbox, turn, nextboxrow, nextboxcolumn, onMark, marker }) => {
-    console.log(smallboxwidth / 20)
     const [clicked, setClick] = useState(false)
 
     return (

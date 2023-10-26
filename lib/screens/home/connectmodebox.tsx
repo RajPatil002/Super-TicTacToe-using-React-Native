@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import { Server } from '../../game/serverconnect'
 import { ShadowButton } from '../../widgets/button'
 import GlobalStyles from '../../widgets/styles'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { stackParams } from '../../../App'
 
 const ConnectModeBox: React.FC<{
     visiblecodebox: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
@@ -29,7 +27,7 @@ const ConnectModeBox: React.FC<{
                     }
                     setClick(false)
                 })}
-                elevation={7.5}
+                elevation={5}
                 textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
             />
@@ -38,7 +36,7 @@ const ConnectModeBox: React.FC<{
                 onPress={() => {
                     setBox(true)
                 }}
-                elevation={7.5}
+                elevation={5}
                 textStyles={GlobalStyles.buttontext}
                 style={GlobalStyles.button}
             />

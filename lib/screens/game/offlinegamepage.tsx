@@ -1,11 +1,10 @@
-import { Appearance, BackHandler, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
+import { Appearance, BackHandler, Dimensions, Modal, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GlobalStyles from '../../widgets/styles'
 import GameBox from './gamebox'
 import BigGame from '../../game/biggame'
 import { useNavigation } from '@react-navigation/native'
 import { CloseButton } from '../../widgets/button'
-import codebox from '../home/codebox'
 import WinnerBox from './winnerbox'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { stackParams } from '../../../App'
@@ -22,14 +21,18 @@ const theme = Appearance.getColorScheme()
 const OfflineGamePage: React.FC<Props> = (props) => {
     // @ts-ignore
     const { route } = props
+    const navigation = useNavigation()
+
+    // game
     const players: players = route.params.players
     const [bigbox, _] = useState(new BigGame())
-    const [availableboxr, setavailableboxr] = useState<number | undefined>()
-    const [availableboxc, setavailableboxc] = useState<number | undefined>()
+
+    // game stats
     const [marker, setMarker] = useState<'x' | 'o'>('x')
     const [winner, setWinner] = useState<player | undefined>()
     const [quitbox, setQuitBox] = useState(false)
-    const navigation = useNavigation()
+    const [availableboxr, setavailableboxr] = useState<number | undefined>()
+    const [availableboxc, setavailableboxc] = useState<number | undefined>()
 
 
     useEffect(() => {
@@ -42,6 +45,8 @@ const OfflineGamePage: React.FC<Props> = (props) => {
 
     return (
         <View style={styles.window}>
+
+            {/* winner box */}
             <Modal
                 visible={winner != undefined}
                 onRequestClose={() => navigation.goBack()}
@@ -57,11 +62,13 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                     </View>
                 </View>
             </Modal>
+
+            {/* Quit box */}
             <Modal
                 visible={quitbox}
                 onRequestClose={() => setQuitBox(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <QuitConfirmBox onPress={(decision) => {
                             setQuitBox(false)

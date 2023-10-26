@@ -1,8 +1,6 @@
-import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Dimensions, StyleSheet, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import GlobalStyles from '../../widgets/styles'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { stackParams } from '../../../App'
 import { ShadowButton } from '../../widgets/button'
 
 const PlayersNameField: React.FC<{
@@ -56,7 +54,7 @@ const PlayersNameField: React.FC<{
                 })}
                 <ShadowButton
                     label='start'
-                    elevation={7.5}
+                    elevation={5}
                     textStyles={GlobalStyles.buttontext}
                     style={GlobalStyles.button}
                     onPress={() => {

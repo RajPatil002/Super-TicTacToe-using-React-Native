@@ -1,7 +1,7 @@
-import { Appearance, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Appearance, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GameBox from './gamebox'
-import SocketServer, { Server } from '../../game/serverconnect'
+import SocketServer from '../../game/serverconnect'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { stackParams } from '../../../App'
 import { CloseButton, ShadowButton } from '../../widgets/button'
@@ -13,6 +13,7 @@ import WinnerBox from './winnerbox'
 import GameTimeout from './gametimeout'
 import { BackHandler } from 'react-native'
 import QuitConfirmBox from '../../widgets/quitconfirmbox'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 type Props = NativeStackNavigationProp<stackParams, 'OnlineGamePage'>
 const width = Dimensions.get('window').width
@@ -28,19 +29,17 @@ const OnlineGamePage: React.FC<Props> = (props) => {
     const [jointime, setJointime] = useState<number | undefined>(undefined)
 
 
-    const [you, setYou] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
-    const [opponent, setOpponent] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
 
     // game
     const [bigbox, __] = useState(new BigGame())
+    const [you, setYou] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
+    const [opponent, setOpponent] = useState<playerstatus>({ status: { ready: false, connected: false }, marker: undefined })
 
     // game stats
     const [availableboxr, setavailableboxr] = useState<number | undefined>()
     const [availableboxc, setavailableboxc] = useState<number | undefined>()
     const [turn, setTurn] = useState(false)
     const [winner, setWinner] = useState<player | undefined>()
-
-
     const [clicked, setClick] = useState(false)
     const [start, setStart] = useState(false)
     const [quitbox, setQuitBox] = useState(false)
@@ -55,11 +54,8 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (socket) {
-            // console.log("here")
             socket.websocket.onopen = () => {
-                // console.log("Connected1")
                 socket.websocket.onmessage = (message) => {
-                    // // console.log("mssg" + (message.data.toString()))
                     const data: ({ move: move } & turn) | players | start | turn | { jointime: number, jointimestart: boolean } = JSON.parse(message.data.toString())
                     console.log(data)
 
@@ -69,13 +65,10 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                             setTurn(data.turn)
                         }
                     } else if ('move' in data) {
-                        // console.log(data.move)
                         const move: move = data.move
-                        // setMove(data)
                         const win = bigbox.bigbox[move.br][move.bc].updateGameBox(move.r, move.c, move.marker)
                         if (win) {
                             if (bigbox.checkBigBoxStatus(move.marker)) {
-                                // console.log('die')
 
                                 setWinner(move.marker == you.marker ? { name: "you", marker: you.marker } : { name: "opponent", marker: opponent.marker })
                                 socket.websocket.close()
@@ -94,13 +87,15 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                         setYou(data.players.you)
                         setOpponent(data.players.opponent)
                         setClick(false)
+                        if (!opponent.status.ready && start) {
+                            setWinner({ name: "you", marker: you.marker })
+                        }
                     } else if ('turn' in data) {
                         setTurn(data.turn)
                     } else if ('jointimestart' in data) {
                         setJointime(data.jointime)
                     }
 
-                    // setState(undefined)
                 }
             }
             socket.websocket.onclose = () => navigation.goBack()
@@ -110,6 +105,7 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                 socket.websocket.onopen = null
                 socket.websocket.onmessage = null
                 socket.websocket.onclose = null
+                socket.websocket.close()
             }
         }
     }, [socket])
@@ -119,17 +115,18 @@ const OnlineGamePage: React.FC<Props> = (props) => {
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', () => {
             console.log("back")
-            return false
+            setQuitBox(true)
+            return true
         })
-
     }, []);
     return (
         <View style={[styles.window]}>
+
+            {/* Status box */}
             <Modal
                 visible={!start}
-                // onRequestClose={() => setPort(undefined)}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 }]}>
                         <CloseButton
                             onPress={() => {
@@ -139,13 +136,31 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                                 }
                             }}
                         />
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ color: "#000", fontSize: 15, letterSpacing: 2, textTransform: 'capitalize' }}> connect code </Text>
-                            <Text style={{ color: "#6d33ff", fontSize: 30, fontWeight: '900', letterSpacing: 5 }}>{port}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between", alignSelf: 'stretch', marginVertical: 10 }}>
+                            <View style={[GlobalStyles.center, {
+                                flexDirection: 'row',
+                                borderRadius: 10,
+                                backgroundColor: "#7b00ff",
+                                padding: 2
+                            }]}>
+                                <Icon name='key' size={width / 20} style={{ margin: 5, }} color={"#fafafa"} />
+                                <View style={{
+                                    flexDirection: 'row',
+                                    borderRadius: 10,
+                                    margin: 10,
+                                    backgroundColor: "#fff"
+                                }}>
+                                    <Text style={{ fontSize: width / 25, letterSpacing: 2, textTransform: 'capitalize', color: "#7b00ff", margin: 5 }}>{port}</Text>
+
+                                </View>
+                            </View>
+                            {jointime ? <GameTimeout
+                                timeout={jointime}
+                                onTimeout={() => {
+                                    navigation.goBack()
+                                }}
+                            /> : null}
                         </View>
-                        {jointime ? <GameTimeout
-                            timeout={jointime}
-                        /> : null}
 
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{
@@ -204,6 +219,8 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                     </View>
                 </View>
             </Modal>
+
+            {/* Winner box */}
             <Modal
                 visible={winner != undefined}
                 onRequestClose={() => navigation.goBack()}
@@ -220,15 +237,19 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                 </View>
             </Modal>
 
+            {/* Quit box */}
             <Modal
                 visible={quitbox}
                 onRequestClose={() => setQuitBox(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <QuitConfirmBox onPress={(decision) => {
                             setQuitBox(false)
                             if (decision) {
+                                if (socket) {
+                                    socket.sendReadyStatus(false)
+                                }
                                 navigation.goBack()
                                 // todo close sockets with winner
                             }
@@ -254,7 +275,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                         if (socket) {
                             await socket.sendMove(move)
                         }
-
                     }}
                     marker={you.marker}
                     nextboxrow={availableboxr}

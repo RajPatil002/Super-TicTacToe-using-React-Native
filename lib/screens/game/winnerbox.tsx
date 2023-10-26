@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Text, View } from 'react-native'
 import React from 'react'
 import GlobalStyles from '../../widgets/styles'
 import Icon from 'react-native-vector-icons/FontAwesome5'
