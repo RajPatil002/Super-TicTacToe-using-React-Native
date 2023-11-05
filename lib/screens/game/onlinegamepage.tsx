@@ -24,11 +24,11 @@ const OnlineGamePage: React.FC<Props> = (props) => {
     // @ts-ignore
     const { route } = props
     const navigation = useNavigation()
+
+    // game server
     const { port, createdbyid } = route.params
     const [socket, setSocket] = useState<SocketServer | null>();
     const [jointime, setJointime] = useState<number | undefined>(undefined)
-
-
 
     // game
     const [bigbox, __] = useState(new BigGame())
@@ -40,6 +40,7 @@ const OnlineGamePage: React.FC<Props> = (props) => {
     const [availableboxc, setavailableboxc] = useState<number | undefined>()
     const [turn, setTurn] = useState(false)
     const [winner, setWinner] = useState<player | undefined>()
+    const [winnerbox, setWinnerBox] = useState(false)
     const [clicked, setClick] = useState(false)
     const [start, setStart] = useState(false)
     const [quitbox, setQuitBox] = useState(false)
@@ -69,7 +70,6 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                         const win = bigbox.bigbox[move.br][move.bc].updateGameBox(move.r, move.c, move.marker)
                         if (win) {
                             if (bigbox.checkBigBoxStatus(move.marker)) {
-
                                 setWinner(move.marker == you.marker ? { name: "you", marker: you.marker } : { name: "opponent", marker: opponent.marker })
                                 socket.websocket.close()
                                 return
@@ -112,13 +112,22 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 
 
 
+
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => {
-            console.log("back")
+        const backCallback = () => {
+            console.log("back", winner)
+            if (winner) {
+                return false
+            }
             setQuitBox(true)
             return true
-        })
-    }, []);
+        }
+        const back = BackHandler.addEventListener('hardwareBackPress', backCallback)
+        return () => {
+            back.remove()
+        }
+    }, [winner]);
+
     return (
         <View style={[styles.window]}>
 
@@ -126,7 +135,7 @@ const OnlineGamePage: React.FC<Props> = (props) => {
             <Modal
                 visible={!start}
                 transparent>
-                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, GlobalStyles.alert]}>
                     <View style={[GlobalStyles.center, { flex: 0, backgroundColor: "#fff", borderRadius: 20, padding: 20 }]}>
                         <CloseButton
                             onPress={() => {
@@ -222,13 +231,13 @@ const OnlineGamePage: React.FC<Props> = (props) => {
 
             {/* Winner box */}
             <Modal
-                visible={winner != undefined}
+                visible={winnerbox}
                 onRequestClose={() => navigation.goBack()}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, GlobalStyles.alert]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <CloseButton
-                            onPress={() => setWinner(undefined)} />
+                            onPress={() => setWinnerBox(false)} />
                         {winner ? <WinnerBox
                             name={winner.name}
                             marker={winner.marker}
@@ -242,7 +251,7 @@ const OnlineGamePage: React.FC<Props> = (props) => {
                 visible={quitbox}
                 onRequestClose={() => setQuitBox(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, GlobalStyles.alert]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <QuitConfirmBox onPress={(decision) => {
                             setQuitBox(false)

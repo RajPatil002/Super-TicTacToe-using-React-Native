@@ -15,6 +15,7 @@ const GlobalStyles = StyleSheet.create({
     button: {
         borderRadius: 10, backgroundColor: "#7b00ff", paddingHorizontal: width / 24, margin: 10
     },
+    alert: { flex: 1, backgroundColor: "#00000099" },
     buttontext: { color: "#fff", fontSize: width / 14, fontWeight: 'bold' }
 })
 export default GlobalStyles

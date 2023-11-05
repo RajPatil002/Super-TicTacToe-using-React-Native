@@ -19,7 +19,7 @@ const WinnerBox: React.FC<player> = ({ marker, name }) => {
                     borderWidth: 1, borderColor: "#228B22", borderRadius: 10,
                     justifyContent: 'center', alignItems: 'center'
                 }}>
-                    {marker != 'x'
+                    {marker == 'x'
                         ? <Icon name='times' size={width / 10} color={'#7b00ff'} />
                         : <Icon name='circle-notch' size={width / 12} color={'#FF6D33'} />}
                 </View>

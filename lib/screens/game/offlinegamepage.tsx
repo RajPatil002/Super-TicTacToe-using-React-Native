@@ -30,31 +30,41 @@ const OfflineGamePage: React.FC<Props> = (props) => {
     // game stats
     const [marker, setMarker] = useState<'x' | 'o'>('x')
     const [winner, setWinner] = useState<player | undefined>()
+    const [winnerbox, setWinnerBox] = useState(false)
     const [quitbox, setQuitBox] = useState(false)
     const [availableboxr, setavailableboxr] = useState<number | undefined>()
     const [availableboxc, setavailableboxc] = useState<number | undefined>()
 
 
+
+
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => {
-            console.log("back")
+        const backCallback = () => {
+            console.log("back", winner)
+            if (winner) {
+                return false
+            }
             setQuitBox(true)
             return true
-        })
-    }, []);
+        }
+        const back = BackHandler.addEventListener('hardwareBackPress', backCallback)
+        return () => {
+            back.remove()
+        }
+    }, [winner]);
 
     return (
         <View style={styles.window}>
 
             {/* winner box */}
             <Modal
-                visible={winner != undefined}
+                visible={winnerbox}
                 onRequestClose={() => navigation.goBack()}
                 transparent>
-                <View style={[GlobalStyles.center, { backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, GlobalStyles.alert]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <CloseButton
-                            onPress={() => setWinner(undefined)} />
+                            onPress={() => setWinnerBox(false)} />
                         {winner ? <WinnerBox
                             name={winner.name}
                             marker={winner.marker}
@@ -68,7 +78,7 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                 visible={quitbox}
                 onRequestClose={() => setQuitBox(false)}
                 transparent>
-                <View style={[GlobalStyles.center, { flex: 1, backgroundColor: "#00000099" }]}>
+                <View style={[GlobalStyles.center, GlobalStyles.alert]}>
                     <View style={[GlobalStyles.center, styles.box]}>
                         <QuitConfirmBox onPress={(decision) => {
                             setQuitBox(false)
@@ -90,26 +100,31 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                     bigbox={bigbox}
                     nextboxrow={availableboxr}
                     nextboxcolumn={availableboxc}
-                    onMark={(bigrow: number, bigcolumn: number, row: number, column: number) => {
+                    onMark={!winner ? (bigrow: number, bigcolumn: number, row: number, column: number) => {
                         // console.log("singleboxitem", column)
-                        const win = bigbox.bigbox[bigrow][bigcolumn].updateGameBox(row, column, marker)
+                        const win = bigbox.bigbox[bigrow][bigcolumn].box = marker
+                        // const win = bigbox.bigbox[bigrow][bigcolumn].updateGameBox(row, column, marker)
                         if (win) {
                             if (bigbox.checkBigBoxStatus(marker)) {
                                 setWinner(players[0].marker == marker ? players[0] : players[1])
+                                console.log(players[0].marker == marker ? players[0] : players[1])
+                                setWinnerBox(true)
+                                console.log(marker, winner)
+                                return
                             }
                         }
                         if (bigbox.isNextBoxAvailable(row, column,)) {
                             // console.log(row, column)
-                            setavailableboxr(row)
-                            setavailableboxc(column)
+                            // setavailableboxr(row)
+                            // setavailableboxc(column)
                         } else {
                             setavailableboxr(undefined)
                             setavailableboxc(undefined)
                         }
-                        // setC(count + 1)
+                        console.log(winner)
                         setMarker(marker == 'o' ? 'x' : 'o')
 
-                    }}
+                    } : () => { }}
                 />
             </View>
 

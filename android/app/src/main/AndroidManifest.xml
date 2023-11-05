@@ -9,7 +9,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:usesCleartextTraffic="true"
       android:allowBackup="false"
-      android:orientation="portrait"
+      android:orientation="vertical"
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"

@@ -12,7 +12,7 @@ const light = theme != 'dark'
 const GameBox: React.FC<{
     online: boolean,
     bigbox: BigGame,
-    onMark: (br: number, bc: number, r: number, c: number) => void,
+    onMark: ((br: number, bc: number, r: number, c: number) => void),
     marker?: marker,
     nextboxrow: number | undefined,
     nextboxcolumn: number | undefined,
