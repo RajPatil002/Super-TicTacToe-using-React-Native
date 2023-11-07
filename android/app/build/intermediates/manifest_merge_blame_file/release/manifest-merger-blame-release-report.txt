@@ -1,0 +1,97 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.tictactoe"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="33" />
+9-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:3:5-67
+11-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:3:22-64
+12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+12-->[:react-native-fs] C:\Users\ME\Desktop\tictactoe\node_modules\react-native-fs\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:7:5-81
+12-->[:react-native-fs] C:\Users\ME\Desktop\tictactoe\node_modules\react-native-fs\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:7:22-78
+13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+14
+15    <application
+15-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:5:5-26:19
+16        android:name="com.tictactoe.MainApplication"
+16-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:6:7-38
+17        android:allowBackup="false"
+17-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:11:7-34
+18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+18-->[androidx.core:core:1.7.0] C:\Users\ME\.gradle\caches\transforms-3\75e4635b66fa4e4e84e71b52579837ce\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+19        android:icon="@mipmap/ic_launcher"
+19-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:8:7-41
+20        android:label="@string/app_name"
+20-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:7:7-39
+21        android:orientation="vertical"
+21-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:12:7-37
+22        android:roundIcon="@mipmap/ic_launcher_round"
+22-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:9:7-52
+23        android:theme="@style/AppTheme"
+23-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:13:7-38
+24        android:usesCleartextTraffic="true" >
+24-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:10:7-42
+25        <activity
+25-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:14:7-25:18
+26            android:name="com.tictactoe.MainActivity"
+26-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:15:9-37
+27            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|smallestScreenSize|uiMode"
+27-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:17:9-106
+28            android:exported="true"
+28-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:20:9-32
+29            android:label="@string/app_name"
+29-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:16:9-41
+30            android:launchMode="singleTask"
+30-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:18:9-40
+31            android:windowSoftInputMode="adjustResize" >
+31-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:19:9-51
+32            <intent-filter>
+32-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:21:9-24:25
+33                <action android:name="android.intent.action.MAIN" />
+33-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:22:13-65
+33-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:22:21-62
+34
+35                <category android:name="android.intent.category.LAUNCHER" />
+35-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:23:13-73
+35-->C:\Users\ME\Desktop\tictactoe\android\app\src\main\AndroidManifest.xml:23:23-70
+36            </intent-filter>
+37        </activity>
+38
+39        <provider
+39-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+40            android:name="androidx.startup.InitializationProvider"
+40-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+41            android:authorities="com.tictactoe.androidx-startup"
+41-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+42            android:exported="false" >
+42-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
+43            <meta-data
+43-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+44                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+44-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+45                android:value="androidx.startup" />
+45-->[androidx.emoji2:emoji2:1.0.0] C:\Users\ME\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+46            <meta-data
+46-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\ME\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+47                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+47-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\ME\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+48                android:value="androidx.startup" />
+48-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\ME\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+49        </provider>
+50
+51        <meta-data
+51-->[com.facebook.soloader:soloader:0.10.5] C:\Users\ME\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
+52            android:name="com.facebook.soloader.enabled"
+52-->[com.facebook.soloader:soloader:0.10.5] C:\Users\ME\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
+53            android:value="false" />
+53-->[com.facebook.soloader:soloader:0.10.5] C:\Users\ME\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
+54    </application>
+55
+56</manifest>

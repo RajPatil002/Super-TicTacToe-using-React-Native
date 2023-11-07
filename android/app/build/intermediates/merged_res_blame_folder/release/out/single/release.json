@@ -1,0 +1,114 @@
+[
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-mdpi_assets_img_bottom_25x.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-mdpi/assets_img_bottom_25x.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-xxxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-hdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-mdpi_assets_img_super_tic_tac_toe_25x.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-mdpi/assets_img_super_tic_tac_toe_25x.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-mdpi_assets_img_bottom_10x.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-mdpi/assets_img_bottom_10x.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-mdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-mdpi_assets_img_super_tic_tac_toe_10x.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-mdpi/assets_img_super_tic_tac_toe_10x.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.tictactoe.app-main-30:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.tictactoe.app-main-30:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.tictactoe.app-merged_res-29:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tictactoe.app-res-23:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    }
+]
