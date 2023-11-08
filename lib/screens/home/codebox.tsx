@@ -15,7 +15,6 @@ const CodeBox: React.FC<{
 
     // room code
     const [code, setCode] = useState(['', '', '', ''])
-    // const [code, setCode] = useState(['1', '0', '0', '0'])
 
     // text input validations and focus nodes
     const [focusnode, setFocusNode] = useState<undefined | number>(undefined)

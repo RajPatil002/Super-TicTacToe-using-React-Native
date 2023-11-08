@@ -71,12 +71,12 @@ const HomePage: React.FC = () => {
                                     setOnlineModeVisible(false)
                                     navigation.navigate('OnlineGamePage', { port, createdbyid })
                                 }}
-                            // navigation={navigation}
                             />}
                     </View>
                 </View>
             </Modal>
 
+            {/* Name field for offline play*/}
             <Modal
                 visible={namefields}
                 onRequestClose={() => setNameField(false)}
@@ -95,6 +95,8 @@ const HomePage: React.FC = () => {
                 </View>
             </Modal>
 
+
+            {/* Rules */}
             <Modal
                 visible={rulesbox}
                 onRequestClose={() => setRulesBox(false)}
