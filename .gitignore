@@ -33,6 +33,9 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+.vscode
+__tests__
+.bundle
 
 # node.js
 #
