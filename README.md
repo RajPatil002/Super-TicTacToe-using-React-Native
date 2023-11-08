@@ -1,4 +1,4 @@
-# Super Tic-Tac-Toe using React Native
+# Super Tic-Tac-Toe using React Native &nbsp;<code><img width="50" src="https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png" alt="React" title="React"/></code>&nbsp;&nbsp;
 
 
 <center><img src="./assets/img/super_tic_tac_toe_10x.png" width=500></center>
@@ -21,7 +21,7 @@ Welcome to the Super Tic-Tac-Toe Game App, a delightful twist on the classic gam
 - Challenge friends online for thrilling matches.
 - Clear and intuitive user interface for easy navigation.
 
-## Technologies Used
+## Technologies
 
 - **Frontend:** React Native
 - **Backend:** [NodeJS](https://github.com/RajPatil002/TicTacToe-Server-using-NodeJs)
