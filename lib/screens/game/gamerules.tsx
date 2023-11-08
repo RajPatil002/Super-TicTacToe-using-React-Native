@@ -1,6 +1,5 @@
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import GlobalStyles from '../../widgets/styles';
 
 const gamerules = [
     "Make your first move in any of the 9 smaller grids.",

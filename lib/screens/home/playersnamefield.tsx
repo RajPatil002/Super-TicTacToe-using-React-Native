@@ -11,7 +11,6 @@ const PlayersNameField: React.FC<{
         <View style={[GlobalStyles.center, { flex: 0, }]}>
             <View style={{
                 alignItems: 'center',
-                // borderWidth: isvalid ? 0 : 2, borderRadius: 10, borderColor: "#fa5555",
                 paddingHorizontal: 5
             }}>
                 {players.map((player, index) => {
@@ -20,7 +19,6 @@ const PlayersNameField: React.FC<{
                     return (
                         <View
                             style={{
-                                // borderWidth: 2,
                                 borderRadius: 20,
                                 margin: 10,
                                 padding: 10,
@@ -33,7 +31,6 @@ const PlayersNameField: React.FC<{
                                 style={{
                                     color: "#000",
                                     fontSize: 30,
-                                    // textAlign: 'center',
                                     paddingVertical: 0,
                                     textTransform: 'capitalize'
                                 }}
