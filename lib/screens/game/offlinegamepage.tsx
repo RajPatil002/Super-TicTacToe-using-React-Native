@@ -102,8 +102,7 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                     nextboxcolumn={availableboxc}
                     onMark={!winner ? (bigrow: number, bigcolumn: number, row: number, column: number) => {
                         // console.log("singleboxitem", column)
-                        const win = bigbox.bigbox[bigrow][bigcolumn].box = marker
-                        // const win = bigbox.bigbox[bigrow][bigcolumn].updateGameBox(row, column, marker)
+                        const win = bigbox.bigbox[bigrow][bigcolumn].updateGameBox(row, column, marker)
                         if (win) {
                             if (bigbox.checkBigBoxStatus(marker)) {
                                 setWinner(players[0].marker == marker ? players[0] : players[1])
