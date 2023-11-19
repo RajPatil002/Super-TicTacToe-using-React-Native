@@ -113,9 +113,9 @@ const OfflineGamePage: React.FC<Props> = (props) => {
                             }
                         }
                         if (bigbox.isNextBoxAvailable(row, column,)) {
-                            // console.log(row, column)
-                            // setavailableboxr(row)
-                            // setavailableboxc(column)
+                            console.log(row, column)
+                            setavailableboxr(row)
+                            setavailableboxc(column)
                         } else {
                             setavailableboxr(undefined)
                             setavailableboxc(undefined)
